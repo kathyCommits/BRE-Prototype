@@ -1,24 +1,24 @@
+# BREEditor - Plain HTML Business Rules Editor
 
-# BRE Editor React (Standalone Server)
+This is a lightweight front-end editor for managing business rules in a plain HTML format using JSON.
 
-This version runs both the frontend (React build) and backend (Node.js Express) from a single folder.
+## Features
 
-## 🚀 How to Run
+- Add, edit, and delete rule blocks
+- Real-time rule table rendering
+- JSON-based structure
+- Works fully on the client-side
 
-1. Open terminal in this folder.
-2. Install dependencies:
-   ```
-   npm install
-   ```
+## How to Run
 
-3. Start the server:
-   ```
-   npm start
-   ```
+1. Clone the repo or download the ZIP
+2. Open `index.html` in any browser
+3. Start editing rules directly in the UI
 
-4. Open your browser and go to:
-   ```
-   http://localhost:3000
-   ```
 
-This will show the BRE Rules Editor and let you edit fields live from your actual JSON.
+## To Do ✏️
+
+- Add Rule Button
+- Delete Rule Button
+- ..?
+
