@@ -16,9 +16,23 @@
 </head>
 <body>
   <h1>BRE Rules Editor</h1>
-  <div style="text-align: right; margin-bottom: 10px;">
+
+  <!-- Add Rule Button (on the right) -->
+  <!--<div style="text-align: right; margin-bottom: 10px;">
     <button onclick="addNewRule()">Add Rule</button>
-    </div>
+    </div> -->
+
+    <!-- Dropdown Filter-by-Category Button -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+      <button onclick="addNewRule()">Add Rule</button>
+      <div>
+        <label for="categoryFilter"><strong>Filter by Category:</strong></label>
+        <select id="categoryFilter" onchange="filterRulesByCategory()">
+          <option value="">All</option>
+        </select>
+      </div>
+    </div>    
+
   <table>
     <thead>
       <tr>

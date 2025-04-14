@@ -1,22 +1,42 @@
-async function loadRules() {
+async function loadRules(filterCategory = '') {
   const res = await fetch('/api/rules');
   const rules = await res.json();
   const tableBody = document.getElementById('rulesTable');
   tableBody.innerHTML = '';
 
+  const categories = new Set();
+
   rules.forEach((rule, index) => {
-    const row = document.createElement('tr');
-    row.innerHTML = `
-  <td>${index + 1}</td>
-  <td><input type="text" id="param-${rule.ruleId}" value="${rule.ruleCheckpointParameter ?? ''}"></td>
-  <td><input type="text" id="cat-${rule.ruleId}" value="${rule.ruleTemplateGroupCategory ?? ''}"></td>
-  <td><input type="text" id="val-${rule.ruleId}" value="${rule.editableValue ?? ''}"></td>
-  <td><input type="text" id="desc-${rule.ruleId}" value="${rule.ruleMetadata?.ruleDescription ?? ''}"></td>
-  <td><button onclick="saveRule('${rule.ruleId}')">Save</button></td>
-  <button onclick="deleteRule('${rule.ruleId}')" style="margin-left: 5px; background-color: #dc3545;">Delete</button>
-`;
-    tableBody.appendChild(row);
+    const cat = rule.ruleTemplateGroupCategory ?? '';
+    categories.add(cat);
+
+    if (!filterCategory || cat === filterCategory) {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${index + 1}</td>
+        <td><input type="text" id="param-${rule.ruleId}" value="${rule.ruleCheckpointParameter ?? ''}"></td>
+        <td><input type="text" id="cat-${rule.ruleId}" value="${cat}"></td>
+        <td><input type="text" id="val-${rule.ruleId}" value="${rule.editableValue ?? rule.ruleConfig?.value ?? ''}"></td>
+        <td><input type="text" id="desc-${rule.ruleId}" value="${rule.ruleMetadata?.ruleDescription ?? ''}"></td>
+        <td>
+          <button onclick="saveRule('${rule.ruleId}')">Save</button>
+          <button onclick="deleteRule('${rule.ruleId}')" style="margin-left: 5px; background-color: #dc3545;">Delete</button>
+        </td>
+      `;
+      tableBody.appendChild(row);
+    }
   });
+
+  // Populate dropdown
+  const filterSelect = document.getElementById('categoryFilter');
+  if (filterSelect && filterSelect.options.length === 1) {
+    [...categories].sort().forEach(cat => {
+      const opt = document.createElement('option');
+      opt.value = cat;
+      opt.textContent = cat;
+      filterSelect.appendChild(opt);
+    });
+  }
 }
 
 async function saveRule(id) {
@@ -88,4 +108,10 @@ async function deleteRule(id) {
   }
 }
 
+function filterRulesByCategory() {
+  const selected = document.getElementById('categoryFilter').value;
+  loadRules(selected);
+}
+
 loadRules();
+
