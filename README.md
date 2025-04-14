@@ -1,4 +1,4 @@
-# BREEditor - Plain HTML Business Rules Editor
+# BRE Prototpye
 
 This is a lightweight front-end editor for managing business rules in a plain HTML format using JSON.
 
