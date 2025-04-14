@@ -23,7 +23,7 @@
           },
           {
             "operandType": "CONSTANT",
-            "value": "-40",
+            "value": "-20",
             "operandDefinition": null,
             "operation": null
           }
@@ -4380,6 +4380,17 @@
             "displayName": "If value in L1- L3, Pass"
           }
         ]
+      }
+    },
+    {
+      "ruleId": "new-1744618855735",
+      "ruleCheckpointParameter": "New Rule",
+      "ruleTemplateGroupCategory": "novice rule",
+      "ruleMetadata": {
+        "ruleDescription": "this rule succeeds previous rules"
+      },
+      "ruleConfig": {
+        "value": "0"
       }
     }
   ]
