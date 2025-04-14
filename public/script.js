@@ -40,23 +40,46 @@ async function loadRules(filterCategory = '') {
 }
 
 async function saveRule(id) {
-  const newVal = document.getElementById(`val-${id}`).value;
-  const newParam = document.getElementById(`param-${id}`).value;
-  const newCategory = document.getElementById(`cat-${id}`).value;
-  const newDescription = document.getElementById(`desc-${id}`).value;
+  const valEl = document.getElementById(`val-${id}`);
+  const paramEl = document.getElementById(`param-${id}`);
+  const catEl = document.getElementById(`cat-${id}`);
+  const descEl = document.getElementById(`desc-${id}`);
 
-  const res = await fetch(`/api/rules/${id}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ newValue: newVal, newParam, newCategory, newDescription })
-  });
+  if (!valEl || !paramEl || !catEl || !descEl) {
+    console.error("Missing fields:", {
+      valEl, paramEl, catEl, descEl
+    });
+    alert('Some fields are missing from the DOM. Try using "All" in the filter.');
+    return;
+  }
 
-  alert(res.ok ? 'Rule updated!' : 'Error updating rule.');
+  const newVal = valEl.value;
+  const newParam = paramEl.value;
+  const newCategory = catEl.value;
+  const newDescription = descEl.value;
+
+  try {
+    const res = await fetch(`/api/rules/${id}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ newValue: newVal, newParam, newCategory, newDescription })
+    });
+
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(text);
+    }
+
+    alert('Rule updated!');
+  } catch (err) {
+    console.error("Error while saving rule:", err);
+    alert(`Error updating rule: ${err.message}`);
+  }
 }
 
 function addNewRule() {
   const tableBody = document.getElementById('rulesTable');
-  const newId = 'new-' + Date.now();
+  const newId = 'new-' + Math.random().toString(36).substr(2, 9);
   
   const row = document.createElement('tr');
   row.innerHTML = `

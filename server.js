@@ -66,8 +66,9 @@ if (isNewRule) {
     } else if (rule.operand?.operandDefinition?.[1]) {
       rule.operand.operandDefinition[1].value = newValue;
     } else {
-      return res.status(400).send('Editable value not found');
-    }
+      // Fallback: initialize ruleConfig if missing
+      rule.ruleConfig = { value: newValue };
+    }    
   }  
 
   // Update other editable fields if provided

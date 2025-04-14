@@ -1195,10 +1195,7 @@
       "ruleType": "CUSTOM",
       "policyType": 0,
       "ruleConfig": {
-        "minHolding": "51",
-        "ruleString": "ageRule",
-        "maxAge": "65",
-        "minAge": "21"
+        "value": "76"
       },
       "applicantMetaData": null,
       "ruleActionString": "ageRuleAction",
