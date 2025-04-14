@@ -7,7 +7,8 @@ This is a lightweight front-end editor for managing business rules in a plain HT
 - Add, edit, and delete rule blocks
 - Real-time rule table rendering
 - JSON-based structure
-- Works fully on the client-side
+- No need to go into the JSON to edit/add/delete rules
+- Filter-by-Category dropdown button
 
 ## How to Run
 
@@ -18,7 +19,7 @@ This is a lightweight front-end editor for managing business rules in a plain HT
 
 ## To Do ✏️
 
-- Add Rule Button
-- Delete Rule Button
-- ..?
+- Validation Layer
+- Conditions and Dependencies (If-then conditions --> If age>65, then salary>65000)
+- ...?
 
