@@ -41,32 +41,35 @@ BRE-Prototype/
 ```bash
 git clone https://github.com/yourusername/BREEditor.git
 cd BRE-Prototype
+```
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/yourusername/BREEditor.git
-cd BRE-Prototype
-
-
-2. Install Dependencies
-
+# 2. Install Dependencies
+```
 npm install
-
-3. Start the App (Choose one of the two options below)
+```
+# 3. Start the App (Choose one of the two options below)
 Option A: Open the app directly from your browser
-
-# Open the HTML file manually from your file explorer:
-# Navigate to: BRE-Prototype/public/index.html
-# Double-click to open it in your browser
+```
+# Navigate to the file manually:
+# BRE-Prototype/public/index.html
+# And double-click it to launch in your browser
+```
 Option B: Run it using the built-in Node.js server
-
+```
 node server.js
 # Then open http://localhost:3000 in your browser
+```
 
+# Importing Rules
+You can upload an existing breRules.json file (like the one in data/) through the UI to load saved rule sets.
 
 ## To Do ✏️
 
 - Validation Layer
 - Conditions and Dependencies (If-then conditions --> If age>65, then salary>65000)
-- ...?
+- Add file upload UI to import breRules.json
+- Export rules as downloadable JSON
+- Validation and error highlighting for invalid rules
+- Rule grouping, filtering, and search
+- Improved UI styling with Tailwind or Bootstrap
 
