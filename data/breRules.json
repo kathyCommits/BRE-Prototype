@@ -4138,42 +4138,6 @@
       }
     },
     {
-      "ruleId": "new-s2lmifodf",
-      "ruleCheckpointParameter": "",
-      "ruleTemplateGroupCategory": "",
-      "ruleMetadata": {
-        "ruleDescription": ""
-      },
-      "ruleConfig": {
-        "value": "30"
-      },
-      "validation": {
-        "type": "threshold",
-        "operator": ">=",
-        "value": 21,
-        "parameter": "age "
-      }
-    },
-    {
-      "ruleId": "new-kymi416nt",
-      "ruleCheckpointParameter": "age",
-      "ruleTemplateGroupCategory": "manual",
-      "ruleMetadata": {
-        "ruleDescription": "work"
-      },
-      "ruleConfig": {
-        "value": "30"
-      },
-      "validation": {
-        "type": "threshold",
-        "operator": ">=",
-        "value": 21,
-        "parameter": "age"
-      },
-      "parameter": "age",
-      "ruleDescription": "work"
-    },
-    {
       "ruleId": "new-ya8gm2vpz",
       "ruleCheckpointParameter": "age",
       "ruleTemplateGroupCategory": "manual",
@@ -4191,6 +4155,139 @@
       },
       "parameter": "age",
       "ruleDescription": "work"
+    },
+    {
+      "ruleId": "new-g2wa3pn71",
+      "ruleCheckpointParameter": "age",
+      "ruleTemplateGroupCategory": "Financial details",
+      "ruleMetadata": {
+        "ruleDescription": "asdfghj"
+      },
+      "ruleConfig": {
+        "value": "30"
+      },
+      "validation": {
+        "type": "threshold",
+        "operator": ">=",
+        "value": 21,
+        "parameter": "age"
+      },
+      "parameter": "age",
+      "ruleDescription": "asdfghj"
+    },
+    {
+      "ruleId": "new-gyutrrqp0",
+      "ruleCheckpointParameter": "Age ",
+      "ruleTemplateGroupCategory": "Application details",
+      "ruleMetadata": {
+        "ruleDescription": "Age must be greater than 21"
+      },
+      "ruleConfig": {
+        "value": "30"
+      },
+      "validation": {
+        "type": "threshold",
+        "operator": ">=",
+        "value": 21,
+        "parameter": "Age "
+      },
+      "parameter": "Age ",
+      "ruleDescription": "Age must be greater than 21"
+    },
+    {
+      "ruleId": "new-195w917pl",
+      "ruleCheckpointParameter": "Age ",
+      "ruleTemplateGroupCategory": "Deviation Parameter",
+      "ruleMetadata": {
+        "ruleDescription": "Age must be greater than 21"
+      },
+      "ruleConfig": {
+        "value": "30"
+      },
+      "validation": {
+        "type": "threshold",
+        "operator": ">=",
+        "value": 21,
+        "parameter": "Age "
+      },
+      "parameter": "Age ",
+      "ruleDescription": "Age must be greater than 21"
+    },
+    {
+      "ruleId": "new-29wc6s60m",
+      "ruleCheckpointParameter": "Age ",
+      "ruleTemplateGroupCategory": "Application details",
+      "ruleMetadata": {
+        "ruleDescription": "Age must be greater than 21"
+      },
+      "ruleConfig": {
+        "value": "30"
+      },
+      "validation": {
+        "type": "threshold",
+        "operator": ">=",
+        "value": 21,
+        "parameter": "Age "
+      },
+      "parameter": "Age ",
+      "ruleDescription": "Age must be greater than 21"
+    },
+    {
+      "ruleId": "new-ovyy73vym",
+      "ruleCheckpointParameter": "Age ",
+      "ruleTemplateGroupCategory": "Manual",
+      "ruleMetadata": {
+        "ruleDescription": "Age must be greater than 21"
+      },
+      "ruleConfig": {
+        "value": "30"
+      },
+      "validation": {
+        "type": "threshold",
+        "operator": ">=",
+        "value": 21,
+        "parameter": "Age "
+      },
+      "parameter": "Age ",
+      "ruleDescription": "Age must be greater than 21"
+    },
+    {
+      "ruleId": "new-p5jdv5juq",
+      "ruleCheckpointParameter": "Age ",
+      "ruleTemplateGroupCategory": "Manual",
+      "ruleMetadata": {
+        "ruleDescription": "Age must be greater than 21"
+      },
+      "ruleConfig": {
+        "value": "30"
+      },
+      "validation": {
+        "type": "threshold",
+        "operator": ">=",
+        "value": 21,
+        "parameter": "Age "
+      },
+      "parameter": "Age ",
+      "ruleDescription": "Age must be greater than 21"
+    },
+    {
+      "ruleId": "new-6cfgnsjkj",
+      "ruleCheckpointParameter": "",
+      "ruleTemplateGroupCategory": "Financial Details",
+      "ruleMetadata": {
+        "ruleDescription": ""
+      },
+      "ruleConfig": {
+        "value": ""
+      },
+      "validation": {
+        "type": "threshold",
+        "operator": ">=",
+        "value": null,
+        "parameter": ""
+      },
+      "parameter": "",
+      "ruleDescription": ""
     }
   ],
   "oldRules": [
