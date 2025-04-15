@@ -4271,6 +4271,25 @@
       },
       "parameter": "",
       "ruleDescription": ""
+    },
+    {
+      "ruleId": "new-7pph5cfuy",
+      "ruleCheckpointParameter": "age",
+      "ruleTemplateGroupCategory": "Application Details",
+      "ruleMetadata": {
+        "ruleDescription": "21"
+      },
+      "ruleConfig": {
+        "value": "30"
+      },
+      "validation": {
+        "type": "threshold",
+        "operator": ">=",
+        "value": 21,
+        "parameter": "age"
+      },
+      "parameter": "age",
+      "ruleDescription": "21"
     }
   ],
   "oldRules": [

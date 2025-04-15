@@ -251,6 +251,32 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 }
 
+// === Other helper functions like deleteRule, filterRulesByCategory ===
+
+function downloadRules(latest = true) {
+  const rules = window.__breRules || [];
+
+  const jsonStr = JSON.stringify(rules, null, 2);
+  const blob = new Blob([jsonStr], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+
+  if (latest) {
+    a.download = "breRules.json";
+  } else {
+    const timestamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-");
+    a.download = `breRules_${timestamp}.json`;
+  }
+
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+
 });
 
 loadRules();
