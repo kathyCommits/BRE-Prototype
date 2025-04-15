@@ -4138,26 +4138,59 @@
       }
     },
     {
-      "ruleId": "new-gmf9uajm5",
+      "ruleId": "new-s2lmifodf",
       "ruleCheckpointParameter": "",
       "ruleTemplateGroupCategory": "",
       "ruleMetadata": {
         "ruleDescription": ""
       },
       "ruleConfig": {
-        "value": ""
+        "value": "30"
+      },
+      "validation": {
+        "type": "threshold",
+        "operator": ">=",
+        "value": 21,
+        "parameter": "age "
       }
     },
     {
-      "ruleId": "new-5ubzau16e",
-      "ruleCheckpointParameter": "",
-      "ruleTemplateGroupCategory": "",
+      "ruleId": "new-kymi416nt",
+      "ruleCheckpointParameter": "age",
+      "ruleTemplateGroupCategory": "manual",
       "ruleMetadata": {
-        "ruleDescription": ""
+        "ruleDescription": "work"
       },
       "ruleConfig": {
-        "value": ""
-      }
+        "value": "30"
+      },
+      "validation": {
+        "type": "threshold",
+        "operator": ">=",
+        "value": 21,
+        "parameter": "age"
+      },
+      "parameter": "age",
+      "ruleDescription": "work"
+    },
+    {
+      "ruleId": "new-ya8gm2vpz",
+      "ruleCheckpointParameter": "age",
+      "ruleTemplateGroupCategory": "manual",
+      "ruleMetadata": {
+        "ruleDescription": "work"
+      },
+      "ruleConfig": {
+        "value": "20"
+      },
+      "validation": {
+        "type": "threshold",
+        "operator": "<=",
+        "value": 21,
+        "parameter": "age"
+      },
+      "parameter": "age",
+      "ruleDescription": "work"
     }
   ],
   "oldRules": [

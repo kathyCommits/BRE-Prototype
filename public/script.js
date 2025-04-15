@@ -135,7 +135,13 @@ delete window.__pendingValidationRules[newId]; // cleanup
   const res = await fetch(`/api/rules/${newId}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(rule)
+    body: JSON.stringify({
+      newValue: rule.value,
+      newParam: rule.parameter,
+      newCategory: rule.ruleTemplateGroupCategory,
+      newDescription: rule.ruleDescription,
+      validation: rule.validation
+    })
   });
 
   if (res.ok) {

@@ -74,6 +74,22 @@ if (isNewRule) {
   // Update other editable fields if provided
 if (newParam !== undefined) rule.ruleCheckpointParameter = newParam;
 if (newCategory !== undefined) rule.ruleTemplateGroupCategory = newCategory;
+
+  // Additional logic for threshold rule fields
+  if (req.body.validation) {
+    rule.validation = req.body.validation;
+    if (!rule.ruleConfig) rule.ruleConfig = {};
+    rule.ruleConfig.value = req.body.value ?? newValue;
+  }
+
+  if (req.body.newParam !== undefined) {
+    rule.parameter = req.body.newParam;
+  }
+
+  if (req.body.newDescription !== undefined) {
+    rule.ruleDescription = req.body.newDescription;
+  }
+
 if (newDescription !== undefined) {
   if (!rule.ruleMetadata) rule.ruleMetadata = {};
   rule.ruleMetadata.ruleDescription = newDescription;
