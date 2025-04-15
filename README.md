@@ -9,7 +9,8 @@ This is a prototype for a lightweight front-end tool to create, view, and manage
 - Add/edit/delete rules via buttons on the UI  
 - Auto-generates unique rule IDs  
 - Displays rules in tabular format  
-- Reads from and writes to a structured JSON format  
+- Reads from and writes to a structured JSON format
+- proto-Validation Layer for selected threshold rules
 - Supports importing existing `breRules.json` files  
 - Built with Vanilla JS, HTML, CSS, and Node.js
 
