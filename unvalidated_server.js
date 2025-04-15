@@ -79,7 +79,6 @@ if (newDescription !== undefined) {
   rule.ruleMetadata.ruleDescription = newDescription;
 }
 
-
   fs.writeFileSync(dataPath, JSON.stringify(json, null, 2));
   res.sendStatus(200);
 });
@@ -92,7 +91,6 @@ app.delete('/api/rules/:id', (req, res) => {
   if (index === -1) return res.status(404).send('Rule not found');
 
   json.ruleUnitDtoList.splice(index, 1);
-
   fs.writeFileSync(dataPath, JSON.stringify(json, null, 2));
   res.sendStatus(200);
 });

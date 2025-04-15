@@ -79,6 +79,12 @@ if (newDescription !== undefined) {
   rule.ruleMetadata.ruleDescription = newDescription;
 }
 
+  
+  // NEW LOGIC: If rule has structured validation data
+  if (req.body.validation) {
+    rule.validation = req.body.validation;
+    rule.value = req.body.value;  // for UI rendering
+  }
 
   fs.writeFileSync(dataPath, JSON.stringify(json, null, 2));
   res.sendStatus(200);
@@ -92,6 +98,12 @@ app.delete('/api/rules/:id', (req, res) => {
   if (index === -1) return res.status(404).send('Rule not found');
 
   json.ruleUnitDtoList.splice(index, 1);
+  
+  // NEW LOGIC: If rule has structured validation data
+  if (req.body.validation) {
+    rule.validation = req.body.validation;
+    rule.value = req.body.value;  // for UI rendering
+  }
 
   fs.writeFileSync(dataPath, JSON.stringify(json, null, 2));
   res.sendStatus(200);

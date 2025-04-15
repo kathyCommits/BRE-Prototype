@@ -31,6 +31,31 @@
           <option value="">All</option>
         </select>
       </div>
+    </div>  
+
+    <!-- allows threshold based rules to be added into the BRE -->  
+    <div id="newRuleForm">
+      <h3>Add a New Threshold Rule</h3>
+    
+      <label>Parameter:</label>
+      <input type="text" id="parameter" placeholder="e.g. Age"><br>
+    
+      <label>Value:</label>
+      <input type="number" id="value" placeholder="e.g. 30"><br>
+    
+      <label>Rule Description:</label>
+      <input type="text" id="description" placeholder="e.g. Age must be >= 21"><br>
+    
+      <label>Threshold:</label>
+      <input type="number" id="threshold" placeholder="e.g. 21"><br>
+    
+      <label>Operator:</label>
+      <select id="operator">
+        <option value=">=" selected>>=</option>
+        <option value="<="><=</option>
+      </select><br><br>
+    
+      <button id="saveBtn">Save Rule</button>
     </div>    
 
   <table>

@@ -1,13 +1,65 @@
 {
   "ruleUnitDtoList": [
     {
+      "ruleId": "06318741f72d1ecf05f2c855",
+      "ruleTemplateGroupCategory": "Financial details",
+      "ruleTemplateId": "9691e38baaf7df3332396198",
+      "ruleType": "REGULAR",
+      "policyType": 0,
+      "ruleConfig": null,
+      "applicantMetaData": null,
+      "ruleActionString": null,
+      "ruleString": "( loanAppUnderwritingParameters.atnwDrop GREATER_THAN_OR_EQUAL_TO -40 )",
+      "ruleCheckpointParameter": "Drop in ATNW",
+      "operand": {
+        "operandType": "CONDITION",
+        "value": null,
+        "operandDefinition": [
+          {
+            "operandType": "VARIABLE",
+            "value": "loanAppUnderwritingParameters.atnwDrop",
+            "operandDefinition": null,
+            "operation": null
+          },
+          {
+            "operandType": "CONSTANT",
+            "value": "-30",
+            "operandDefinition": null,
+            "operation": null
+          }
+        ],
+        "operation": {
+          "operatorType": "ARITHMATIC",
+          "operatorValue": "GREATER_THAN_OR_EQUAL_TO"
+        }
+      },
+      "importList": null,
+      "isActive": false,
+      "isDeleted": false,
+      "createdBy": "Pulkit",
+      "createdAt": 1742811143576,
+      "updatedBy": "Pulkit",
+      "updatedAt": 1742811143576,
+      "ruleMetadata": {
+        "ruleDescription": "Drop in ATNW should be more than -20%, with deviation -40% allowed",
+        "failureDescription": "Policy criteria not met",
+        "orderOfOccurence": [
+          {
+            "fullPath": "loanAppUnderwritingParameters.atnwDrop",
+            "displayName": "Drop in ATNW"
+          }
+        ]
+      }
+    },
+    {
       "ruleId": "08eabff6a1f1f23a4b275c16",
       "ruleTemplateGroupCategory": "Deviation Parameter",
       "ruleTemplateId": "2abdc3f46e2d61f4b8c3b2e3",
       "ruleType": "CUSTOM",
       "policyType": 1,
       "ruleConfig": {
-        "value": "30"
+        "param": "debtEquityDeviation",
+        "allowedList": "L1,L2"
       },
       "applicantMetaData": [
         {
@@ -88,6 +140,140 @@
           {
             "fullPath": "nonDeviationRuleV2",
             "displayName": "If value in L1- L6, fail"
+          }
+        ]
+      }
+    },
+    {
+      "ruleId": "13fc45c816c7a80fd36e4169",
+      "ruleTemplateGroupCategory": "Loan details",
+      "ruleTemplateId": "980a9bdae0b3a6001bbc4be6",
+      "ruleType": "REGULAR",
+      "policyType": 0,
+      "ruleConfig": null,
+      "applicantMetaData": null,
+      "ruleActionString": null,
+      "ruleString": "( ( terms.tenure.duration GREATER_THAN_OR_EQUAL_TO 12 ) AND ( terms.tenure.duration LESS_THAN_OR_EQUAL_TO 36 ) )",
+      "ruleCheckpointParameter": "Loan Tenure",
+      "operand": {
+        "operandType": "CONDITION",
+        "value": null,
+        "operandDefinition": [
+          {
+            "operandType": "CONDITION",
+            "value": null,
+            "operandDefinition": [
+              {
+                "operandType": "VARIABLE",
+                "value": "terms.tenure.duration",
+                "operandDefinition": null,
+                "operation": null
+              },
+              {
+                "operandType": "CONSTANT",
+                "value": "12",
+                "operandDefinition": null,
+                "operation": null
+              }
+            ],
+            "operation": {
+              "operatorType": "ARITHMATIC",
+              "operatorValue": "GREATER_THAN_OR_EQUAL_TO"
+            }
+          },
+          {
+            "operandType": "CONDITION",
+            "value": null,
+            "operandDefinition": [
+              {
+                "operandType": "VARIABLE",
+                "value": "terms.tenure.duration",
+                "operandDefinition": null,
+                "operation": null
+              },
+              {
+                "operandType": "CONSTANT",
+                "value": "36",
+                "operandDefinition": null,
+                "operation": null
+              }
+            ],
+            "operation": {
+              "operatorType": "ARITHMATIC",
+              "operatorValue": "LESS_THAN_OR_EQUAL_TO"
+            }
+          }
+        ],
+        "operation": {
+          "operatorType": "CONNECTOR",
+          "operatorValue": "AND"
+        }
+      },
+      "importList": null,
+      "isActive": false,
+      "isDeleted": false,
+      "createdBy": "Pulkit",
+      "createdAt": 1742811143717,
+      "updatedBy": "Pulkit",
+      "updatedAt": 1742811143717,
+      "ruleMetadata": {
+        "ruleDescription": "Min allowable loan tenure is 12 months and max is 36 months",
+        "failureDescription": "Policy criteria not met",
+        "orderOfOccurence": [
+          {
+            "fullPath": "terms.tenure.duration",
+            "displayName": "Loan Tenure"
+          }
+        ]
+      }
+    },
+    {
+      "ruleId": "14dba822b8ce3d1bb8408eb3",
+      "ruleTemplateGroupCategory": "Financial details",
+      "ruleTemplateId": "495494f837d7aac41f16a9c4",
+      "ruleType": "REGULAR",
+      "policyType": 0,
+      "ruleConfig": null,
+      "applicantMetaData": null,
+      "ruleActionString": null,
+      "ruleString": "( loanAppUnderwritingParameters.cashProfitDrop GREATER_THAN_OR_EQUAL_TO -40 )",
+      "ruleCheckpointParameter": "Drop in Cash profit",
+      "operand": {
+        "operandType": "CONDITION",
+        "value": null,
+        "operandDefinition": [
+          {
+            "operandType": "VARIABLE",
+            "value": "loanAppUnderwritingParameters.cashProfitDrop",
+            "operandDefinition": null,
+            "operation": null
+          },
+          {
+            "operandType": "CONSTANT",
+            "value": "-40",
+            "operandDefinition": null,
+            "operation": null
+          }
+        ],
+        "operation": {
+          "operatorType": "ARITHMATIC",
+          "operatorValue": "GREATER_THAN_OR_EQUAL_TO"
+        }
+      },
+      "importList": null,
+      "isActive": false,
+      "isDeleted": false,
+      "createdBy": "Pulkit",
+      "createdAt": 1742811143733,
+      "updatedBy": "Pulkit",
+      "updatedAt": 1742811143733,
+      "ruleMetadata": {
+        "ruleDescription": "Drop in Cash profit should be more than -20%, with deviation -40% allowed",
+        "failureDescription": "Policy criteria not met",
+        "orderOfOccurence": [
+          {
+            "fullPath": "loanAppUnderwritingParameters.cashProfitDrop",
+            "displayName": "Drop in Cash profit"
           }
         ]
       }
@@ -2351,6 +2537,57 @@
       }
     },
     {
+      "ruleId": "8e72d9c3317588bc1ba722d1",
+      "ruleTemplateGroupCategory": "Financial details",
+      "ruleTemplateId": "f9fe68d997ee01854bb7af41",
+      "ruleType": "REGULAR",
+      "policyType": 0,
+      "ruleConfig": null,
+      "applicantMetaData": null,
+      "ruleActionString": null,
+      "ruleString": "( loanAppUnderwritingParameters.turnoverDrop GREATER_THAN_OR_EQUAL_TO -40 )",
+      "ruleCheckpointParameter": "Drop in Turnover",
+      "operand": {
+        "operandType": "CONDITION",
+        "value": null,
+        "operandDefinition": [
+          {
+            "operandType": "VARIABLE",
+            "value": "loanAppUnderwritingParameters.turnoverDrop",
+            "operandDefinition": null,
+            "operation": null
+          },
+          {
+            "operandType": "CONSTANT",
+            "value": "-40",
+            "operandDefinition": null,
+            "operation": null
+          }
+        ],
+        "operation": {
+          "operatorType": "ARITHMATIC",
+          "operatorValue": "GREATER_THAN_OR_EQUAL_TO"
+        }
+      },
+      "importList": null,
+      "isActive": false,
+      "isDeleted": false,
+      "createdBy": "Pulkit",
+      "createdAt": 1742811144553,
+      "updatedBy": "Pulkit",
+      "updatedAt": 1742811144553,
+      "ruleMetadata": {
+        "ruleDescription": "Drop in Turnover should be more than -20%, with deviation -40% allowed",
+        "failureDescription": "Policy criteria not met",
+        "orderOfOccurence": [
+          {
+            "fullPath": "loanAppUnderwritingParameters.turnoverDrop",
+            "displayName": "Drop in Turnover"
+          }
+        ]
+      }
+    },
+    {
       "ruleId": "8e77d0251631baeef8522f84",
       "ruleTemplateGroupCategory": "Loan details",
       "ruleTemplateId": "deafe04f5f4adcfef1177e8c",
@@ -2626,6 +2863,57 @@
           {
             "fullPath": "nonDeviationRuleV2",
             "displayName": "If value in L1- L6, fail"
+          }
+        ]
+      }
+    },
+    {
+      "ruleId": "a21aee4368b4ea66fb5d2c47",
+      "ruleTemplateGroupCategory": "Financial details",
+      "ruleTemplateId": "e1216471e435dd5d6955f609",
+      "ruleType": "REGULAR",
+      "policyType": 0,
+      "ruleConfig": null,
+      "applicantMetaData": null,
+      "ruleActionString": null,
+      "ruleString": "( loanAppUnderwritingParameters.debtorDays LESS_THAN_OR_EQUAL_TO 150 )",
+      "ruleCheckpointParameter": "Debtors days",
+      "operand": {
+        "operandType": "CONDITION",
+        "value": null,
+        "operandDefinition": [
+          {
+            "operandType": "VARIABLE",
+            "value": "loanAppUnderwritingParameters.debtorDays",
+            "operandDefinition": null,
+            "operation": null
+          },
+          {
+            "operandType": "CONSTANT",
+            "value": "150",
+            "operandDefinition": null,
+            "operation": null
+          }
+        ],
+        "operation": {
+          "operatorType": "ARITHMATIC",
+          "operatorValue": "LESS_THAN_OR_EQUAL_TO"
+        }
+      },
+      "importList": null,
+      "isActive": false,
+      "isDeleted": false,
+      "createdBy": "Pulkit",
+      "createdAt": 1742811144639,
+      "updatedBy": "Pulkit",
+      "updatedAt": 1742811144639,
+      "ruleMetadata": {
+        "ruleDescription": "Debtor days shall not be more than 90 days, with deviation 150 days",
+        "failureDescription": "Policy criteria not met",
+        "orderOfOccurence": [
+          {
+            "fullPath": "loanAppUnderwritingParameters.debtorDays",
+            "displayName": "Debtors days"
           }
         ]
       }
@@ -4100,352 +4388,6 @@
       },
       "ruleConfig": {
         "value": "0"
-      }
-    },
-    {
-      "ruleId": "new-6leblal7h",
-      "ruleCheckpointParameter": "",
-      "ruleTemplateGroupCategory": "",
-      "ruleMetadata": {
-        "ruleDescription": ""
-      },
-      "ruleConfig": {
-        "value": ""
-      },
-      "validation": {
-        "type": "threshold",
-        "operator": ">=",
-        "value": 21,
-        "parameter": "age"
-      },
-      "value": "30"
-    },
-    {
-      "ruleId": "new-inygslq6c",
-      "ruleCheckpointParameter": "",
-      "ruleTemplateGroupCategory": "",
-      "ruleMetadata": {
-        "ruleDescription": ""
-      },
-      "ruleConfig": {
-        "value": "30"
-      },
-      "validation": {
-        "type": "threshold",
-        "operator": ">=",
-        "value": 21,
-        "parameter": "age"
-      }
-    },
-    {
-      "ruleId": "new-gmf9uajm5",
-      "ruleCheckpointParameter": "",
-      "ruleTemplateGroupCategory": "",
-      "ruleMetadata": {
-        "ruleDescription": ""
-      },
-      "ruleConfig": {
-        "value": ""
-      }
-    },
-    {
-      "ruleId": "new-5ubzau16e",
-      "ruleCheckpointParameter": "",
-      "ruleTemplateGroupCategory": "",
-      "ruleMetadata": {
-        "ruleDescription": ""
-      },
-      "ruleConfig": {
-        "value": ""
-      }
-    }
-  ],
-  "oldRules": [
-    {
-      "ruleId": "06318741f72d1ecf05f2c855",
-      "ruleTemplateGroupCategory": "Financial details",
-      "ruleTemplateId": "9691e38baaf7df3332396198",
-      "ruleType": "REGULAR",
-      "policyType": 0,
-      "ruleConfig": null,
-      "applicantMetaData": null,
-      "ruleActionString": null,
-      "ruleString": "( loanAppUnderwritingParameters.atnwDrop GREATER_THAN_OR_EQUAL_TO -40 )",
-      "ruleCheckpointParameter": "Drop in ATNW",
-      "operand": {
-        "operandType": "CONDITION",
-        "value": null,
-        "operandDefinition": [
-          {
-            "operandType": "VARIABLE",
-            "value": "loanAppUnderwritingParameters.atnwDrop",
-            "operandDefinition": null,
-            "operation": null
-          },
-          {
-            "operandType": "CONSTANT",
-            "value": "-30",
-            "operandDefinition": null,
-            "operation": null
-          }
-        ],
-        "operation": {
-          "operatorType": "ARITHMATIC",
-          "operatorValue": "GREATER_THAN_OR_EQUAL_TO"
-        }
-      },
-      "importList": null,
-      "isActive": false,
-      "isDeleted": false,
-      "createdBy": "Pulkit",
-      "createdAt": 1742811143576,
-      "updatedBy": "Pulkit",
-      "updatedAt": 1742811143576,
-      "ruleMetadata": {
-        "ruleDescription": "Drop in ATNW should be more than -20%, with deviation -40% allowed",
-        "failureDescription": "Policy criteria not met",
-        "orderOfOccurence": [
-          {
-            "fullPath": "loanAppUnderwritingParameters.atnwDrop",
-            "displayName": "Drop in ATNW"
-          }
-        ]
-      }
-    },
-    {
-      "ruleId": "13fc45c816c7a80fd36e4169",
-      "ruleTemplateGroupCategory": "Loan details",
-      "ruleTemplateId": "980a9bdae0b3a6001bbc4be6",
-      "ruleType": "REGULAR",
-      "policyType": 0,
-      "ruleConfig": null,
-      "applicantMetaData": null,
-      "ruleActionString": null,
-      "ruleString": "( ( terms.tenure.duration GREATER_THAN_OR_EQUAL_TO 12 ) AND ( terms.tenure.duration LESS_THAN_OR_EQUAL_TO 36 ) )",
-      "ruleCheckpointParameter": "Loan Tenure",
-      "operand": {
-        "operandType": "CONDITION",
-        "value": null,
-        "operandDefinition": [
-          {
-            "operandType": "CONDITION",
-            "value": null,
-            "operandDefinition": [
-              {
-                "operandType": "VARIABLE",
-                "value": "terms.tenure.duration",
-                "operandDefinition": null,
-                "operation": null
-              },
-              {
-                "operandType": "CONSTANT",
-                "value": "12",
-                "operandDefinition": null,
-                "operation": null
-              }
-            ],
-            "operation": {
-              "operatorType": "ARITHMATIC",
-              "operatorValue": "GREATER_THAN_OR_EQUAL_TO"
-            }
-          },
-          {
-            "operandType": "CONDITION",
-            "value": null,
-            "operandDefinition": [
-              {
-                "operandType": "VARIABLE",
-                "value": "terms.tenure.duration",
-                "operandDefinition": null,
-                "operation": null
-              },
-              {
-                "operandType": "CONSTANT",
-                "value": "36",
-                "operandDefinition": null,
-                "operation": null
-              }
-            ],
-            "operation": {
-              "operatorType": "ARITHMATIC",
-              "operatorValue": "LESS_THAN_OR_EQUAL_TO"
-            }
-          }
-        ],
-        "operation": {
-          "operatorType": "CONNECTOR",
-          "operatorValue": "AND"
-        }
-      },
-      "importList": null,
-      "isActive": false,
-      "isDeleted": false,
-      "createdBy": "Pulkit",
-      "createdAt": 1742811143717,
-      "updatedBy": "Pulkit",
-      "updatedAt": 1742811143717,
-      "ruleMetadata": {
-        "ruleDescription": "Min allowable loan tenure is 12 months and max is 36 months",
-        "failureDescription": "Policy criteria not met",
-        "orderOfOccurence": [
-          {
-            "fullPath": "terms.tenure.duration",
-            "displayName": "Loan Tenure"
-          }
-        ]
-      }
-    },
-    {
-      "ruleId": "14dba822b8ce3d1bb8408eb3",
-      "ruleTemplateGroupCategory": "Financial details",
-      "ruleTemplateId": "495494f837d7aac41f16a9c4",
-      "ruleType": "REGULAR",
-      "policyType": 0,
-      "ruleConfig": null,
-      "applicantMetaData": null,
-      "ruleActionString": null,
-      "ruleString": "( loanAppUnderwritingParameters.cashProfitDrop GREATER_THAN_OR_EQUAL_TO -40 )",
-      "ruleCheckpointParameter": "Drop in Cash profit",
-      "operand": {
-        "operandType": "CONDITION",
-        "value": null,
-        "operandDefinition": [
-          {
-            "operandType": "VARIABLE",
-            "value": "loanAppUnderwritingParameters.cashProfitDrop",
-            "operandDefinition": null,
-            "operation": null
-          },
-          {
-            "operandType": "CONSTANT",
-            "value": "-40",
-            "operandDefinition": null,
-            "operation": null
-          }
-        ],
-        "operation": {
-          "operatorType": "ARITHMATIC",
-          "operatorValue": "GREATER_THAN_OR_EQUAL_TO"
-        }
-      },
-      "importList": null,
-      "isActive": false,
-      "isDeleted": false,
-      "createdBy": "Pulkit",
-      "createdAt": 1742811143733,
-      "updatedBy": "Pulkit",
-      "updatedAt": 1742811143733,
-      "ruleMetadata": {
-        "ruleDescription": "Drop in Cash profit should be more than -20%, with deviation -40% allowed",
-        "failureDescription": "Policy criteria not met",
-        "orderOfOccurence": [
-          {
-            "fullPath": "loanAppUnderwritingParameters.cashProfitDrop",
-            "displayName": "Drop in Cash profit"
-          }
-        ]
-      }
-    },
-    {
-      "ruleId": "8e72d9c3317588bc1ba722d1",
-      "ruleTemplateGroupCategory": "Financial details",
-      "ruleTemplateId": "f9fe68d997ee01854bb7af41",
-      "ruleType": "REGULAR",
-      "policyType": 0,
-      "ruleConfig": null,
-      "applicantMetaData": null,
-      "ruleActionString": null,
-      "ruleString": "( loanAppUnderwritingParameters.turnoverDrop GREATER_THAN_OR_EQUAL_TO -40 )",
-      "ruleCheckpointParameter": "Drop in Turnover",
-      "operand": {
-        "operandType": "CONDITION",
-        "value": null,
-        "operandDefinition": [
-          {
-            "operandType": "VARIABLE",
-            "value": "loanAppUnderwritingParameters.turnoverDrop",
-            "operandDefinition": null,
-            "operation": null
-          },
-          {
-            "operandType": "CONSTANT",
-            "value": "-40",
-            "operandDefinition": null,
-            "operation": null
-          }
-        ],
-        "operation": {
-          "operatorType": "ARITHMATIC",
-          "operatorValue": "GREATER_THAN_OR_EQUAL_TO"
-        }
-      },
-      "importList": null,
-      "isActive": false,
-      "isDeleted": false,
-      "createdBy": "Pulkit",
-      "createdAt": 1742811144553,
-      "updatedBy": "Pulkit",
-      "updatedAt": 1742811144553,
-      "ruleMetadata": {
-        "ruleDescription": "Drop in Turnover should be more than -20%, with deviation -40% allowed",
-        "failureDescription": "Policy criteria not met",
-        "orderOfOccurence": [
-          {
-            "fullPath": "loanAppUnderwritingParameters.turnoverDrop",
-            "displayName": "Drop in Turnover"
-          }
-        ]
-      }
-    },
-    {
-      "ruleId": "a21aee4368b4ea66fb5d2c47",
-      "ruleTemplateGroupCategory": "Financial details",
-      "ruleTemplateId": "e1216471e435dd5d6955f609",
-      "ruleType": "REGULAR",
-      "policyType": 0,
-      "ruleConfig": null,
-      "applicantMetaData": null,
-      "ruleActionString": null,
-      "ruleString": "( loanAppUnderwritingParameters.debtorDays LESS_THAN_OR_EQUAL_TO 150 )",
-      "ruleCheckpointParameter": "Debtors days",
-      "operand": {
-        "operandType": "CONDITION",
-        "value": null,
-        "operandDefinition": [
-          {
-            "operandType": "VARIABLE",
-            "value": "loanAppUnderwritingParameters.debtorDays",
-            "operandDefinition": null,
-            "operation": null
-          },
-          {
-            "operandType": "CONSTANT",
-            "value": "150",
-            "operandDefinition": null,
-            "operation": null
-          }
-        ],
-        "operation": {
-          "operatorType": "ARITHMATIC",
-          "operatorValue": "LESS_THAN_OR_EQUAL_TO"
-        }
-      },
-      "importList": null,
-      "isActive": false,
-      "isDeleted": false,
-      "createdBy": "Pulkit",
-      "createdAt": 1742811144639,
-      "updatedBy": "Pulkit",
-      "updatedAt": 1742811144639,
-      "ruleMetadata": {
-        "ruleDescription": "Debtor days shall not be more than 90 days, with deviation 150 days",
-        "failureDescription": "Policy criteria not met",
-        "orderOfOccurence": [
-          {
-            "fullPath": "loanAppUnderwritingParameters.debtorDays",
-            "displayName": "Debtors days"
-          }
-        ]
       }
     }
   ]

@@ -17,10 +17,10 @@ async function loadRules(filterCategory = '') {
       const row = document.createElement('tr');
       row.innerHTML = `
         <td>${index + 1}</td>
-        <td><input type="text" id="param-${rule.ruleId}" value="${rule.ruleCheckpointParameter || rule.parameter || ''}"></td>
+        <td><input type="text" id="param-${rule.ruleId}" value="${rule.ruleCheckpointParameter ?? ''}"></td>
         <td><input type="text" id="cat-${rule.ruleId}" value="${cat}"></td>
-        <td><input type="text" id="val-${rule.ruleId}" value="${rule.editableValue || rule.value || rule.ruleConfig?.value || ''}"></td>
-        <td><input type="text" id="desc-${rule.ruleId}" value="${rule.ruleMetadata?.ruleDescription || rule.ruleDescription || ''}"></td>
+        <td><input type="text" id="val-${rule.ruleId}" value="${rule.editableValue ?? rule.ruleConfig?.value ?? ''}"></td>
+        <td><input type="text" id="desc-${rule.ruleId}" value="${rule.ruleMetadata?.ruleDescription ?? ''}"></td>
         <td>
           <button onclick="saveRule('${rule.ruleId}')">Save</button>
           <button onclick="deleteRule('${rule.ruleId}')" style="margin-left: 5px; background-color: #dc3545;">Delete</button>
