@@ -4094,13 +4094,15 @@
     {
       "ruleId": "new-1744618855735",
       "ruleCheckpointParameter": "New Rule",
-      "ruleTemplateGroupCategory": "novice rule",
+      "ruleTemplateGroupCategory": "new rule",
       "ruleMetadata": {
         "ruleDescription": "this rule succeeds previous rules"
       },
       "ruleConfig": {
         "value": "0"
-      }
+      },
+      "parameter": "New Rule",
+      "ruleDescription": "this rule succeeds previous rules"
     },
     {
       "ruleId": "new-6leblal7h",
@@ -4136,25 +4138,6 @@
         "value": 21,
         "parameter": "age"
       }
-    },
-    {
-      "ruleId": "new-ya8gm2vpz",
-      "ruleCheckpointParameter": "age",
-      "ruleTemplateGroupCategory": "manual",
-      "ruleMetadata": {
-        "ruleDescription": "work"
-      },
-      "ruleConfig": {
-        "value": "20"
-      },
-      "validation": {
-        "type": "threshold",
-        "operator": "<=",
-        "value": 21,
-        "parameter": "age"
-      },
-      "parameter": "age",
-      "ruleDescription": "work"
     },
     {
       "ruleId": "new-g2wa3pn71",

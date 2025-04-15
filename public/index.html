@@ -17,50 +17,57 @@
 <body>
   <h1>BRE Rules Editor</h1>
 
-  <!-- Add Rule Button (on the right) -->
-  <!--<div style="text-align: right; margin-bottom: 10px;">
-    <button onclick="addNewRule()">Add Rule</button>
-    </div> -->
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+    <button onclick="toggleAddRuleForm()">Add Rule</button>
+    <div>
+      <label for="categoryFilter"><strong>Filter by Category:</strong></label>
+      <select id="categoryFilter" onchange="filterRulesByCategory()">
+        <option value="">All</option>
+      </select>
+    </div>
+  </div>
 
-    <!-- Dropdown Filter-by-Category Button -->
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-      <button onclick="addNewRule()">Add Rule</button>
-      <div>
-        <label for="categoryFilter"><strong>Filter by Category:</strong></label>
-        <select id="categoryFilter" onchange="filterRulesByCategory()">
-          <option value="">All</option>
-        </select>
-      </div>
-    </div>  
+  <!-- Toggleable Rule Type and Form -->
+  <div id="ruleTypeSelector" style="display: none; margin-bottom: 10px;">
+    <label for="validationType">Select Rule Type:</label>
+    <select id="validationType" onchange="showRuleFormByType()">
+      <option value="">-- Select --</option>
+      <option value="Threshold Check">Threshold Check</option>
+      <option value="Deviation Check">Deviation Check</option>
+      <option value="Unclassified">Unclassified</option>
+    </select>
+  </div>
 
-    <!-- allows threshold based rules to be added into the BRE -->  
-    <div id="newRuleForm">
-      <h3>Add a New Threshold Rule</h3>
-    
-      <label>Parameter:</label>
-      <input type="text" id="parameter" placeholder="e.g. Age"><br>
-    
-      <label>Value:</label>
-      <input type="number" id="value" placeholder="e.g. 30"><br>
-    
-      <label>Rule Description:</label>
-      <input type="text" id="description" placeholder="e.g. Age must be >= 21"><br>
-    
+  <!-- Rule Form -->
+  <div id="newRuleForm" style="display: none;">
+    <h3>Add a New Rule</h3>
+
+    <label>Parameter:</label>
+    <input type="text" id="parameter" placeholder="e.g. Age"><br>
+
+    <label for="category">Category:</label>
+    <input list="categories" id="category" />
+    <datalist id="categories"></datalist>
+
+    <label>Value:</label>
+    <input type="number" id="value" placeholder="e.g. 30"><br>
+
+    <label>Rule Description:</label>
+    <input type="text" id="description" placeholder="e.g. Age must be >= 21"><br>
+
+    <div id="thresholdSection">
       <label>Threshold:</label>
       <input type="number" id="threshold" placeholder="e.g. 21"><br>
+    </div>
 
-      <label for="category">Category:</label>
-      <input list="categories" id="category" />
-      <datalist id="categories"></datalist>
+    <label>Operator:</label>
+    <select id="operator">
+      <option value=">=" selected>>=</option>
+      <option value="<="><=</option>
+    </select><br><br>
 
-      <label>Operator:</label>
-      <select id="operator">
-        <option value=">=" selected>>=</option>
-        <option value="<="><=</option>
-      </select><br><br>
-    
-      <button id="saveBtn">Save Rule</button>
-    </div>    
+    <button id="saveBtn">Save Rule</button>
+  </div>
 
   <table>
     <thead>
@@ -75,6 +82,28 @@
     </thead>
     <tbody id="rulesTable"></tbody>
   </table>
+
+  <script>
+    function toggleAddRuleForm() {
+      document.getElementById("ruleTypeSelector").style.display = "block";
+    }
+
+    function showRuleFormByType() {
+      const type = document.getElementById("validationType").value;
+      const form = document.getElementById("newRuleForm");
+      const thresholdSection = document.getElementById("thresholdSection");
+
+      if (type === "Threshold Check") {
+        form.style.display = "block";
+        thresholdSection.style.display = "block";
+      } else if (type === "Deviation Check" || type === "Unclassified") {
+        form.style.display = "block";
+        thresholdSection.style.display = "none";
+      } else {
+        form.style.display = "none";
+      }
+    }
+  </script>
   <script src="script.js"></script>
 </body>
 </html>

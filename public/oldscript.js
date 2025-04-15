@@ -39,6 +39,20 @@ async function loadRules(filterCategory = '') {
       filterSelect.appendChild(opt);
     });
   }
+
+  const filterDropdown = document.getElementById("categoryFilter");
+const categoryList = document.getElementById("categories");
+
+if (filterDropdown && categoryList) {
+  categoryList.innerHTML = ''; // clear previous
+  [...filterDropdown.options].forEach(opt => {
+    if (opt.value && opt.value !== 'All') {
+      const option = document.createElement("option");
+      option.value = opt.value;
+      categoryList.appendChild(option);
+    }
+  });
+}
 }
 
 async function saveRule(id) {
@@ -193,7 +207,7 @@ document.addEventListener("DOMContentLoaded", function () {
     row.innerHTML = `
       <td>New</td>
       <td><input type="text" id="param-${newId}" value="${param}"></td>
-      <td><input type="text" id="cat-${newId}" value="${category}"></td>
+      <td><input type="text" id="cat-${newId}" value="manual"></td>
       <td><input type="text" id="val-${newId}" value="${value}"></td>
       <td><input type="text" id="desc-${newId}" value="${description}"></td>
       <td><button onclick="submitNewRule('${newId}')">Save</button></td>
