@@ -1,100 +1,6 @@
 {
   "ruleUnitDtoList": [
     {
-      "ruleId": "08eabff6a1f1f23a4b275c16",
-      "ruleTemplateGroupCategory": "Deviation Parameter",
-      "ruleTemplateId": "2abdc3f46e2d61f4b8c3b2e3",
-      "ruleType": "CUSTOM",
-      "policyType": 1,
-      "ruleConfig": {
-        "value": "30"
-      },
-      "applicantMetaData": [
-        {
-          "path": "borrower.underwritingParameters.debtEquityRatio",
-          "resolutionType": "DIRECT"
-        }
-      ],
-      "ruleActionString": "deviationRuleActionV2",
-      "ruleString": "deviationRuleV2",
-      "ruleCheckpointParameter": "debt",
-      "operand": {
-        "operandType": "FUNCTION",
-        "value": "deviationRuleV2",
-        "operandDefinition": null,
-        "operation": null
-      },
-      "importList": [
-        "com.saison.omni.drlevaluator.utility.EvaluationMethods.CustomRuleEvaluations.deviationRuleV2",
-        "com.saison.omni.drlevaluator.utility.EvaluationMethods.CustomRuleActions.deviationRuleActionV2"
-      ],
-      "isActive": false,
-      "isDeleted": false,
-      "createdBy": "Pulkit",
-      "createdAt": 1742811143673,
-      "updatedBy": "Pulkit",
-      "updatedAt": 1742811143673,
-      "ruleMetadata": {
-        "ruleDescription": "Deviation approval till L3 allowed",
-        "failureDescription": "Deviation norms not met",
-        "orderOfOccurence": [
-          {
-            "fullPath": "deviationRuleV2",
-            "displayName": "If value in L1- L2, Pass"
-          }
-        ]
-      },
-      "parameter": "debt",
-      "ruleDescription": "Deviation approval till L3 allowed"
-    },
-    {
-      "ruleId": "121c8ec30cdd708b779b349a",
-      "ruleTemplateGroupCategory": "Deviation Parameter",
-      "ruleTemplateId": "f62968472d527322e930d71d",
-      "ruleType": "CUSTOM",
-      "policyType": 1,
-      "ruleConfig": {
-        "param": "negativeWilfullDefaulter",
-        "blockList": "L1,L2,L3,L4,L5,L6"
-      },
-      "applicantMetaData": [
-        {
-          "label": "negativeWilfullDefaulter",
-          "path": "getDeviationValues",
-          "resolutionType": "CUSTOM"
-        }
-      ],
-      "ruleActionString": "nonDeviationRuleActionV2",
-      "ruleString": "nonDeviationRuleV2",
-      "ruleCheckpointParameter": "PEP Check/Negative Willful Defaulter Check/Negative Google Check etc.",
-      "operand": {
-        "operandType": "FUNCTION",
-        "value": "nonDeviationRuleV2",
-        "operandDefinition": null,
-        "operation": null
-      },
-      "importList": [
-        "com.saison.omni.drlevaluator.utility.EvaluationMethods.CustomRuleEvaluations.nonDeviationRuleV2",
-        "com.saison.omni.drlevaluator.utility.EvaluationMethods.CustomRuleActions.nonDeviationRuleActionV2"
-      ],
-      "isActive": false,
-      "isDeleted": false,
-      "createdBy": "Pulkit",
-      "createdAt": 1742811143693,
-      "updatedBy": "Pulkit",
-      "updatedAt": 1742811143693,
-      "ruleMetadata": {
-        "ruleDescription": "No deviation allowed",
-        "failureDescription": "Devation norms not met",
-        "orderOfOccurence": [
-          {
-            "fullPath": "nonDeviationRuleV2",
-            "displayName": "If value in L1- L6, fail"
-          }
-        ]
-      }
-    },
-    {
       "ruleId": "195dbe048c82c648da8d9392",
       "ruleTemplateGroupCategory": "Financial details",
       "ruleTemplateId": "e642e377fe452250559cc126",
@@ -117,7 +23,7 @@
           },
           {
             "operandType": "CONSTANT",
-            "value": "150",
+            "value": "200",
             "operandDefinition": null,
             "operation": null
           }
@@ -143,7 +49,9 @@
             "displayName": "Creditor days"
           }
         ]
-      }
+      },
+      "parameter": "Creditor days",
+      "ruleDescription": "Creditor days shall not be more than 90 days, with deviation 150 days"
     },
     {
       "ruleId": "1c6b42df0cc2d9744da7a19c",
@@ -168,7 +76,7 @@
           },
           {
             "operandType": "CONSTANT",
-            "value": "5",
+            "value": "6",
             "operandDefinition": null,
             "operation": null
           }
@@ -194,7 +102,9 @@
             "displayName": "EMI Bounces in Last 6 months"
           }
         ]
-      }
+      },
+      "parameter": "EMI Bounces in L6M",
+      "ruleDescription": "EMI bounces to be not >5 in L6M due to insufficient funds"
     },
     {
       "ruleId": "1d47ec83735f5db6d5b27f78",

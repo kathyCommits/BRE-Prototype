@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <link rel="stylesheet" href="styles.css">
   <title>BRE Rules Editor</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; }
@@ -111,8 +112,23 @@
         form.style.display = "none";
       }
     }
+
+
   </script>
   <!-- ✅ Good version -->
 <script src="script.js" defer></script>
+
+<div id="editModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span id="modalClose" class="close">&times;</span>
+    <h2>Edit Rule</h2>
+    <form id="editForm"></form>
+    <div class="modal-actions">
+      <button type="button" id="modalSave" class="btn-primary">Save</button>
+      <button type="button" id="modalCancel" class="btn-secondary">Cancel</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

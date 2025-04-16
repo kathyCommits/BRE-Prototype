@@ -1,5 +1,6 @@
 
 // === GLOBAL FUNCTIONS ===
+let currentEditingRuleId = null;
 
 async function loadRules(filterCategory = '') {
   const res = await fetch('/api/rules');
@@ -9,6 +10,8 @@ async function loadRules(filterCategory = '') {
 
   const categories = new Set();
 
+ 
+
   rules.forEach((rule, index) => {
     const cat = rule.ruleTemplateGroupCategory || rule.category || '';
     categories.add(cat);
@@ -16,20 +19,23 @@ async function loadRules(filterCategory = '') {
     if (!filterCategory || cat === filterCategory) {
       const row = document.createElement('tr');
       row.innerHTML = `
-        <td>${index + 1}</td>
-        <td><input type="text" id="param-${rule.ruleId}" value="${rule.ruleCheckpointParameter || rule.parameter || ''}"></td>
-        <td><input type="text" id="cat-${rule.ruleId}" value="${cat}"></td>
-        <td><input type="text" id="val-${rule.ruleId}" value="${rule.editableValue || rule.value || rule.ruleConfig?.value || ''}"></td>
-        <td><input type="text" id="desc-${rule.ruleId}" value="${rule.ruleMetadata?.ruleDescription || rule.ruleDescription || ''}"></td>
-        <td>
-          <button onclick="saveRule('${rule.ruleId}')">Save</button>
-          <button onclick="deleteRule('${rule.ruleId}')" style="margin-left: 5px; background-color: #dc3545;">Delete</button>
-        </td>
-      `;
+  <td>${index + 1}</td>
+  <td>${rule.ruleCheckpointParameter || rule.parameter || ''}</td>
+  <td>${cat}</td>
+  <td>${rule.editableValue || rule.value || rule.ruleConfig?.value || ''}</td>
+  <td>${rule.ruleMetadata?.ruleDescription || rule.ruleDescription || ''}</td>
+  <td>
+    <button class="edit-btn" data-id="${rule.ruleId}">Edit</button>
+    <button onclick="deleteRule('${rule.ruleId}')" style="margin-left: 5px; background-color: #dc3545;">Delete</button>
+  </td>
+`;
       tableBody.appendChild(row);
     }
   });
-
+  document.querySelectorAll('.edit-btn').forEach(btn => {
+    btn.addEventListener('click', () => openEditModal(btn.dataset.id));
+  });
+  
   const filterSelect = document.getElementById('categoryFilter');
   if (filterSelect && filterSelect.options.length === 1) {
     [...categories].sort().forEach(cat => {
@@ -205,7 +211,15 @@ function filterRulesByCategory() {
 
 // === DOM INITIALIZATION ===
 document.addEventListener("DOMContentLoaded", function () {
-  
+  document.getElementById('modalClose').onclick = closeEditModal;
+document.getElementById('modalCancel').onclick = closeEditModal;
+document.getElementById('modalSave').onclick = saveEditedRule;
+window.onclick = function(event) {
+  if (event.target === document.getElementById('editModal')) {
+    closeEditModal();
+  }
+};
+
   
   const thresholdSaveBtn = document.getElementById("saveBtn");
   if (thresholdSaveBtn) {
@@ -336,7 +350,7 @@ function uploadRules(event) {
 
       // ✅ Safely load rules after DOM is ready
       setTimeout(() => {
-      const table = document.getElementById("ruleTableBody");
+      const table = document.getElementById("rulesTable");
         if (table) {
       loadRules(); // calls window.__breRules and populates table
         } else {
@@ -358,7 +372,7 @@ function uploadRules(event) {
 // bypassing the backend API and directly displaying the imported rules.
 
 function loadRulesFromMemory() {
-  const ruleTable = document.getElementById("ruleTableBody");
+  const ruleTable = document.getElementById("rulesTable");
   if (!ruleTable) {
     alert("Error: Could not find table body in DOM.");
     return;
@@ -370,7 +384,7 @@ function loadRulesFromMemory() {
     const id = rule.ruleId || index;
 
     const param = rule.ruleCheckpointParameter || "";
-    const category = rule.ruleTemplateGroupCategory || "";
+    const cat = rule.ruleTemplateGroupCategory || "";
     const description =
       rule.ruleMetadata?.ruleDescription || "";
 
@@ -390,19 +404,91 @@ function loadRulesFromMemory() {
 
     const row = document.createElement("tr");
     row.innerHTML = `
-      <td>${index + 1}</td>
-      <td><input type="text" id="param-${id}" value="${param}"/></td>
-      <td><input type="text" id="cat-${id}" value="${category}"/></td>
-      <td><input type="text" id="val-${id}" value="${value}"/></td>
-      <td><input type="text" id="desc-${id}" value="${description}"/></td>
-      <td>
-        <button onclick="saveRule('${id}')">Save</button>
-        <button onclick="deleteRule('${id}')">Delete</button>
-      </td>
-    `;
+    <td>${index + 1}</td>
+    <td>${rule.ruleCheckpointParameter || rule.parameter || ''}</td>
+    <td>${cat}</td>
+    <td>${rule.editableValue || rule.value || rule.ruleConfig?.value || ''}</td>
+    <td>${rule.ruleMetadata?.ruleDescription || rule.ruleDescription || ''}</td>
+    <td>
+      <button class="edit-btn" data-id="${rule.ruleId}">Edit</button>
+      <button onclick="deleteRule('${rule.ruleId}')" style="margin-left: 5px; background-color: #dc3545;">Delete</button>
+    </td>
+  `;
+  
     ruleTable.appendChild(row);
   });
+  document.querySelectorAll('.edit-btn').forEach(btn => {
+    btn.addEventListener('click', () => openEditModal(btn.dataset.id));
+  });
+  
 }
 
+function openEditModal(ruleId) {
+  const rule = (window.__breRules || []).find(r => r.ruleId === ruleId);
+  if (!rule) return;
+
+  currentEditingRuleId = ruleId;
+  const form = document.getElementById('editForm');
+  form.innerHTML = `
+    <div class="form-group">
+      <label>Parameter:</label>
+      <input type="text" id="editParam" value="${rule.ruleCheckpointParameter || rule.parameter || ''}" required>
+    </div>
+    <div class="form-group">
+      <label>Category:</label>
+      <input type="text" id="editCategory" value="${rule.ruleTemplateGroupCategory || rule.category || ''}">
+    </div>
+    <div class="form-group">
+      <label>Value:</label>
+      <input type="text" id="editValue" value="${rule.editableValue || rule.value || rule.ruleConfig?.value || ''}">
+    </div>
+    <div class="form-group">
+      <label>Description:</label>
+      <textarea id="editDescription">${rule.ruleMetadata?.ruleDescription || rule.ruleDescription || ''}</textarea>
+    </div>
+  `;
+  document.getElementById('editModal').style.display = 'block';
+}
+
+function closeEditModal() {
+  document.getElementById('editModal').style.display = 'none';
+  currentEditingRuleId = null;
+}
+
+async function saveEditedRule() {
+  if (!currentEditingRuleId) return;
+  const param = document.getElementById('editParam').value;
+  const category = document.getElementById('editCategory').value;
+  const value = document.getElementById('editValue').value;
+  const description = document.getElementById('editDescription').value;
+
+  try {
+    const res = await fetch(`/api/rules/${currentEditingRuleId}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        newValue: value,
+        newParam: param,
+        newCategory: category,
+        newDescription: description
+      })
+    });
+    if (!res.ok) throw new Error(await res.text());
+    // Update local copy
+    const rule = (window.__breRules || []).find(r => r.ruleId === currentEditingRuleId);
+    if (rule) {
+      rule.ruleCheckpointParameter = param;
+      rule.ruleTemplateGroupCategory = category;
+      if (rule.ruleConfig) rule.ruleConfig.value = value;
+      else rule.value = value;
+      if (!rule.ruleMetadata) rule.ruleMetadata = {};
+      rule.ruleMetadata.ruleDescription = description;
+    }
+    closeEditModal();
+    loadRulesFromMemory();
+  } catch (err) {
+    alert('Error saving rule: ' + err.message);
+  }
+}
 
 loadRules();
