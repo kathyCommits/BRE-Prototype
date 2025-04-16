@@ -39,8 +39,12 @@
   </div>
 
   <!-- Add this where your Add Rule button or header is -->
-  <button onclick="downloadRules(true)">Download Current Rules</button>
-  <button onclick="downloadRules(false)">Download Backup</button>
+  <div style="margin-top: 10px;">
+    <button onclick="downloadRules(true)">Download Current Rules</button>
+    <button onclick="downloadRules(false)">Download Backup</button>
+    <input type="file" id="uploadInput" accept=".json" style="display: none;" onchange="uploadRules(event)">
+    <button onclick="document.getElementById('uploadInput').click()">Upload Rules</button>
+  </div>  
 
   <!-- Rule Form -->
   <div id="newRuleForm" style="display: none;">
@@ -108,6 +112,7 @@
       }
     }
   </script>
-  <script src="script.js"></script>
+  <!-- ✅ Good version -->
+<script src="script.js" defer></script>
 </body>
 </html>

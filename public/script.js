@@ -85,6 +85,23 @@ async function saveRule(id) {
       throw new Error(text);
     }
 
+    const rule = window.__breRules.find(r => r.ruleId === id);
+if (rule) {
+  rule.ruleCheckpointParameter = newParam;
+  rule.ruleTemplateGroupCategory = newCategory;
+
+  if (rule.ruleConfig) {
+    rule.ruleConfig.value = newVal;
+  } else {
+    rule.value = newVal;
+  }
+
+  if (!rule.ruleMetadata) rule.ruleMetadata = {};
+  rule.ruleMetadata.ruleDescription = newDescription;
+
+  loadRulesFromMemory(); // 👈 refresh visible table row values
+}
+
     alert('Rule updated!');
   } catch (err) {
     alert(`Error updating rule: ${err.message}`);
@@ -245,7 +262,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const categoryInput = document.getElementById("category");
     const categoryList = document.getElementById("categories");
 
-  window.__breRules = rules;
     const filterDropdown = document.getElementById("categoryFilter");
 
   if (categoryInput && categoryList && filterDropdown) {
@@ -257,9 +273,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 }
-
-
-
 
 });
 
@@ -287,5 +300,109 @@ function downloadRules(latest = true) {
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
+
+function uploadRules(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const parsed = JSON.parse(e.target.result);
+      console.log("Parsed JSON:", parsed);
+
+      let rules = null;
+
+      if (Array.isArray(parsed)) {
+        rules = parsed;
+      } else if (Array.isArray(parsed.rules)) {
+        rules = parsed.rules;
+      } else if (Array.isArray(parsed.data)) {
+        rules = parsed.data;
+      } else if (Array.isArray(parsed.breRules)) {
+        rules = parsed.breRules;
+      } else if (parsed?.metadata?.rules && Array.isArray(parsed.metadata.rules)) {
+        rules = parsed.metadata.rules;
+      } else if (Array.isArray(parsed.ruleUnitDtoList)) {
+        rules = parsed.ruleUnitDtoList; // ✅ this is what your file actually contains
+      }
+
+      if (!rules) {
+        throw new Error("Could not find a rules array in uploaded file.");
+      }
+
+      window.__breRules = rules;
+      alert("Rules imported successfully!");
+
+      // ✅ Safely load rules after DOM is ready
+      setTimeout(() => {
+      const table = document.getElementById("ruleTableBody");
+        if (table) {
+      loadRules(); // calls window.__breRules and populates table
+        } else {
+        alert("DOM not ready. Retrying load...");
+        setTimeout(() => loadRules(), 100); // retry after short delay
+        }
+      }, 50);
+
+    } catch (err) {
+      alert("Error uploading rules: " + err.message);
+    }
+  };
+
+  reader.readAsText(file);
+}
+
+// === Renders the rule table using the in-memory breRules array ===
+// This is used after uploading a JSON file from the frontend,
+// bypassing the backend API and directly displaying the imported rules.
+
+function loadRulesFromMemory() {
+  const ruleTable = document.getElementById("ruleTableBody");
+  if (!ruleTable) {
+    alert("Error: Could not find table body in DOM.");
+    return;
+  }
+  ruleTable.innerHTML = ""; // Clear current content
+
+  const rules = window.__breRules || [];
+  rules.forEach((rule, index) => {
+    const id = rule.ruleId || index;
+
+    const param = rule.ruleCheckpointParameter || "";
+    const category = rule.ruleTemplateGroupCategory || "";
+    const description =
+      rule.ruleMetadata?.ruleDescription || "";
+
+    let value = "";
+
+    if (rule.operand?.operandType === "CONDITION") {
+      // Threshold-style logic
+      value = rule.ruleConfig?.value || rule.value || "";
+    } else if (rule.operand?.operandType === "FUNCTION") {
+      // Show readable string for function-based logic
+      const config = rule.ruleConfig || {};
+      const allowed = config.allowedList || config.blockList || "";
+      const fallbackDisplay =
+        rule.ruleMetadata?.orderOfOccurence?.[0]?.displayName || "";
+      value = allowed || fallbackDisplay || rule.operand?.value || "[function]";
+    }
+
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${index + 1}</td>
+      <td><input type="text" id="param-${id}" value="${param}"/></td>
+      <td><input type="text" id="cat-${id}" value="${category}"/></td>
+      <td><input type="text" id="val-${id}" value="${value}"/></td>
+      <td><input type="text" id="desc-${id}" value="${description}"/></td>
+      <td>
+        <button onclick="saveRule('${id}')">Save</button>
+        <button onclick="deleteRule('${id}')">Delete</button>
+      </td>
+    `;
+    ruleTable.appendChild(row);
+  });
+}
+
 
 loadRules();

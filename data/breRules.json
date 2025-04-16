@@ -17,7 +17,7 @@
       ],
       "ruleActionString": "deviationRuleActionV2",
       "ruleString": "deviationRuleV2",
-      "ruleCheckpointParameter": "Debt-Equity ratio",
+      "ruleCheckpointParameter": "debt",
       "operand": {
         "operandType": "FUNCTION",
         "value": "deviationRuleV2",
@@ -35,7 +35,7 @@
       "updatedBy": "Pulkit",
       "updatedAt": 1742811143673,
       "ruleMetadata": {
-        "ruleDescription": "Deviation approval till L2 allowed",
+        "ruleDescription": "Deviation approval till L3 allowed",
         "failureDescription": "Deviation norms not met",
         "orderOfOccurence": [
           {
@@ -43,7 +43,9 @@
             "displayName": "If value in L1- L2, Pass"
           }
         ]
-      }
+      },
+      "parameter": "debt",
+      "ruleDescription": "Deviation approval till L3 allowed"
     },
     {
       "ruleId": "121c8ec30cdd708b779b349a",
@@ -4290,6 +4292,38 @@
       },
       "parameter": "age",
       "ruleDescription": "21"
+    },
+    {
+      "ruleId": "06318741f72d1ecf05f2c855",
+      "ruleCheckpointParameter": "Drop in ATNW",
+      "ruleTemplateGroupCategory": "Financial details",
+      "ruleMetadata": {
+        "ruleDescription": "Drop in ATNW should be more than -20%, with deviation -40% allowed"
+      },
+      "ruleConfig": {
+        "value": "30"
+      },
+      "parameter": "Drop in ATNW",
+      "ruleDescription": "Drop in ATNW should be more than -20%, with deviation -40% allowed"
+    },
+    {
+      "ruleId": "new-vaxml9c5k",
+      "ruleCheckpointParameter": "age",
+      "ruleTemplateGroupCategory": "",
+      "ruleMetadata": {
+        "ruleDescription": ""
+      },
+      "ruleConfig": {
+        "value": ""
+      },
+      "validation": {
+        "type": "threshold",
+        "operator": ">=",
+        "value": null,
+        "parameter": "age"
+      },
+      "parameter": "age",
+      "ruleDescription": ""
     }
   ],
   "oldRules": [
