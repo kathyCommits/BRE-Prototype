@@ -461,46 +461,53 @@ document.addEventListener("DOMContentLoaded", () => {
   editableInputs.forEach(input => input.disabled = true);
   }
 
+  document.getElementById('uploadProofButton').addEventListener('click', async () => {
+    try {
+      const res = await fetch('/auth/user', {
+        credentials: 'include'
+      });
   
-  document.getElementById('uploadProofButton').addEventListener('click', () => {
-    const fileInput = document.getElementById('proofFileInput');
-    fileInput.click();
-  
-    fileInput.onchange = async () => {
-      const file = fileInput.files[0];
-      if (!file) return;
-  
-      const formData = new FormData();
-      formData.append('proofFile', file);
-  
-      const resultBox = document.getElementById('uploadResult');
-      resultBox.textContent = 'Uploading...';
-
-      try {
-        const res = await fetch('/api/proof', {
-          method: 'POST',
-          credentials: 'include',
-          body: formData,
-        });
-        
-        if (!res.ok) throw new Error(`Upload failed: ${res.status}`);
-        
-        const result = await res.json();  // 🟢 must come BEFORE using `result`
-        
-        localStorage.setItem('proofFilename', result.metadata.filename); // 🟢 now safe to use
-        
-        resultBox.innerHTML = `
-          ✅ File uploaded successfully<br>
-          Filename: ${result.metadata.filename}<br>
-          Uploaded by: ${result.metadata.uploadedBy}
-        `;
-
-      } catch (err) {
-        console.error('Error uploading file:', err);
-        resultBox.innerHTML = '❌ Not Authenticated. Please Login';
+      if (!res.ok) {
+        throw new Error("Not logged in");
       }
-    };
-  });  
+  
+      const fileInput = document.getElementById('proofFileInput');
+      fileInput.click();
+  
+      fileInput.onchange = async () => {
+        const file = fileInput.files[0];
+        if (!file) return;
+  
+        const formData = new FormData();
+        formData.append('proofFile', file);
+  
+        const resultBox = document.getElementById('uploadResult');
+        resultBox.textContent = 'Uploading...';
+  
+        try {
+          const res = await fetch('/api/proof', {
+            method: 'POST',
+            credentials: 'include',
+            body: formData,
+          });
+  
+          const result = await res.json();
+  
+          localStorage.setItem('proofFilename', result.metadata.filename);
+  
+          resultBox.innerHTML = `
+            ✅ File uploaded successfully<br>
+            Filename: ${result.metadata.filename}<br>
+            Uploaded by: ${result.metadata.uploadedBy}
+          `;
+        } catch (err) {
+          resultBox.innerHTML = '❌ Upload failed: ' + err.message;
+        }
+      };
+    } catch (err) {
+      alert("❌ You must be logged in to upload a proof document.");
+    }
+  });   
 });
 
 async function checkAuth() {
@@ -545,14 +552,33 @@ async function checkAuth() {
       <a href="/auth/google" id="loginLink">Login with Google</a>
     `;
   }
+
+  if (!user || !user.name || !user.email) {
+    localStorage.removeItem('proofFilename');
+  }  
 }
 
-function handleJsonUploadClick() {
+async function handleJsonUploadClick() {
   const proofUploaded = localStorage.getItem('proofFilename');
-  if (!proofUploaded) {
-    alert("⚠️ Please upload a proof document before uploading JSON rules.");
-    return;
+
+  try {
+    const res = await fetch('/auth/user', {
+      credentials: 'include',
+    });
+
+    if (!res.ok) {
+      throw new Error("Not logged in");
+    }
+
+    if (!proofUploaded) {
+      alert("⚠️ Please upload a proof document before uploading JSON rules.");
+      return;
+    }
+
+    document.getElementById('uploadInput').click();
+
+  } catch (err) {
+    alert("❌ You must be logged in to upload rules.");
   }
-  document.getElementById('uploadInput').click();
 }
 

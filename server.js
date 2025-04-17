@@ -346,3 +346,10 @@ app.put('/api/rules/:id', ensureAuthenticated, (req, res) => {
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+app.get('/auth/logout', (req, res) => {
+  req.logout(() => {
+    res.clearCookie('connect.sid');
+    res.redirect('/');
+  });
+});
