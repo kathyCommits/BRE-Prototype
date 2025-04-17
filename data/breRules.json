@@ -4301,7 +4301,7 @@
         "ruleDescription": "Drop in ATNW should be more than -20%, with deviation -40% allowed"
       },
       "ruleConfig": {
-        "value": "30"
+        "value": "-30"
       },
       "parameter": "Drop in ATNW",
       "ruleDescription": "Drop in ATNW should be more than -20%, with deviation -40% allowed"

@@ -151,6 +151,11 @@ async function submitNewRule(newId) {
   return submitValidatedRule(newId);
 }
 
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) return next();
+  res.status(401).json({ message: 'Not logged in' });
+}
+
 function validateRule(rule) {
   const val = parseFloat(rule.value);
   const validation = rule.validation;
@@ -223,7 +228,7 @@ async function deleteRule(id) {
 
 function filterRulesByCategory() {
   const selected = document.getElementById('categoryFilter').value;
-  loadRules(selected);
+  loadRulesFromMemory(selected);
 }
 
 // === DOM INITIALIZATION ===
@@ -279,6 +284,11 @@ document.addEventListener("DOMContentLoaded", function () {
     // Call existing save logic
     submitNewRule(newId);
   });
+}
+
+if (!localStorage.getItem("proofFilename")) {
+  const addBtn = document.querySelector("button[onclick='addNewRule()']");
+  if (addBtn) addBtn.disabled = true;
 }
 
     const categoryInput = document.getElementById("category");
@@ -425,17 +435,32 @@ function loadRulesFromMemory() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  
   const stored = localStorage.getItem("breRules");
-  if (stored) {
-    try {
-      window.__breRules = JSON.parse(stored);
-      loadRulesFromMemory();  // use stored data
-    } catch (e) {
-      console.warn("Error loading rules from localStorage on reload:", e);
+  const proofUploaded = localStorage.getItem("proofFilename");
+
+  if (stored && proofUploaded) {
+  try {
+    window.__breRules = JSON.parse(stored);
+    const proofUploaded = localStorage.getItem("proofFilename");
+    if (proofUploaded) {
+    loadRulesFromMemory();
+    } else {
+    console.warn("❌ Not loading rules — proof not uploaded.");
     }
-  } else {
-    console.warn("No stored rules found. Upload a JSON to get started.");
+
+  } catch (e) {
+    console.warn("Error loading rules from localStorage:", e);
   }
+  } else if (!proofUploaded) {
+  console.warn("❌ Rules table blocked — no proof uploaded");
+  }
+
+  const editableInputs = document.querySelectorAll('#rulesTable input, #rulesTable select, #rulesTable button');
+  if (!proofUploaded) {
+  editableInputs.forEach(input => input.disabled = true);
+  }
+
   
   document.getElementById('uploadProofButton').addEventListener('click', () => {
     const fileInput = document.getElementById('proofFileInput');
@@ -450,23 +475,26 @@ document.addEventListener("DOMContentLoaded", () => {
   
       const resultBox = document.getElementById('uploadResult');
       resultBox.textContent = 'Uploading...';
-  
+
       try {
         const res = await fetch('/api/proof', {
           method: 'POST',
           credentials: 'include',
           body: formData,
         });
-  
+        
         if (!res.ok) throw new Error(`Upload failed: ${res.status}`);
-  
-        const data = await res.json();
-  
+        
+        const result = await res.json();  // 🟢 must come BEFORE using `result`
+        
+        localStorage.setItem('proofFilename', result.metadata.filename); // 🟢 now safe to use
+        
         resultBox.innerHTML = `
           ✅ File uploaded successfully<br>
-          Filename: ${data.metadata.filename}<br>
-          Uploaded by: ${data.metadata.uploadedBy}
+          Filename: ${result.metadata.filename}<br>
+          Uploaded by: ${result.metadata.uploadedBy}
         `;
+
       } catch (err) {
         console.error('Error uploading file:', err);
         resultBox.innerHTML = '❌ Not Authenticated. Please Login';
@@ -491,6 +519,12 @@ async function checkAuth() {
     const user = await res.json();
     console.log('📦 Raw user response:', user);
 
+    const filename = localStorage.getItem('proofFilename');
+    if (filename) {
+    const resultBox = document.getElementById('uploadResult');
+    resultBox.innerHTML += `<br>📎 You previously uploaded: <strong>${filename}</strong>`;
+    }
+
     if (user && user.name && user.email) {
       document.getElementById('authStatus').innerHTML = `
         ✅ Logged in as <b>${user.name}</b> (${user.email})
@@ -513,4 +547,12 @@ async function checkAuth() {
   }
 }
 
-loadRulesFromMemory();
+function handleJsonUploadClick() {
+  const proofUploaded = localStorage.getItem('proofFilename');
+  if (!proofUploaded) {
+    alert("⚠️ Please upload a proof document before uploading JSON rules.");
+    return;
+  }
+  document.getElementById('uploadInput').click();
+}
+

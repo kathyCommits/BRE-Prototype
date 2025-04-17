@@ -187,7 +187,7 @@ app.get('/api/rules', (req, res) => {
 });
 
 
-app.post('/api/rules/:id', (req, res) => {
+app.post('/api/rules/:id', ensureAuthenticated, (req, res) => {
   const { id } = req.params;
   const { newValue, newParam, newCategory, newDescription } = req.body;
   const json = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
@@ -248,7 +248,7 @@ if (newDescription !== undefined) {
   res.sendStatus(200);
 });
 
-app.delete('/api/rules/:id', (req, res) => {
+app.delete('/api/rules/:id', ensureAuthenticated, (req, res) => {
   const { id } = req.params;
   const json = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
 
@@ -335,6 +335,12 @@ app.get('/auth/user', (req, res) => {
 // 2. 🔚 Catch-all LAST
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/index.html'));
+});
+
+// 🔐 Protect rule actions
+
+app.put('/api/rules/:id', ensureAuthenticated, (req, res) => {
+  // logic for updating a rule
 });
 
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));

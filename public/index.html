@@ -45,7 +45,7 @@
     <button onclick="downloadRules(true)">Download Current Rules</button>
     <button onclick="downloadRules(false)">Download Backup</button>
     <input type="file" id="uploadInput" accept=".json" style="display: none;" onchange="uploadRules(event)">
-    <button onclick="document.getElementById('uploadInput').click()">Upload Rules</button>
+    <button onclick="handleJsonUploadClick()">Upload Rules</button>
   </div>  
 
   <div id="uploadSection" style="margin-top: 20px;">
