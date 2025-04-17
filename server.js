@@ -75,15 +75,6 @@ passport.deserializeUser((obj, done) => {
   done(null, obj);
 });
 
-app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/' }),
-  (req, res) => {
-    req.login(req.user, (err) => {
-      if (err) return next(err);
-      res.redirect('/');
-    });
-});
-
 passport.serializeUser((user, done) => {
 
   console.log('👉 SERIALIZING USER:', user);
@@ -243,15 +234,16 @@ app.get('/auth/logout', (req, res) => {
 });
 
 app.get('/auth/user', (req, res) => {
+  console.log('📩 /auth/user called');
   if (req.isAuthenticated()) {
-    console.log("✅ SESSION USER:", req.user);
-    // Send simplified structure
+    console.log('✅ SESSION USER:', req.user);
     return res.json({
-      name: req.user.name,             // ← FIXED LINE
+      name: req.user.name,
       email: req.user.email,
       id: req.user.id
     });
   } else {
+    console.log('⛔ Not authenticated in /auth/user');
     return res.status(401).json({ message: 'Not logged in' });
   }
 });

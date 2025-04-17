@@ -440,32 +440,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function checkAuth() {
   document.getElementById('authStatus').innerHTML = '🔄 Checking login...';
+
   try {
     const res = await fetch('/auth/user', {
       credentials: 'include',
     });
 
-    if (res.status === 200) {
-      const user = await res.json();
-      console.log('✅ Fetched user:', user);
+    if (!res.ok) {
+      console.warn('🔁 /auth/user failed, forcing fallback UI');
+      throw new Error('No session found');
+    }
+
+    const user = await res.json();
+    console.log('📦 Raw user response:', user);
+
+    if (user && user.name && user.email) {
       document.getElementById('authStatus').innerHTML = `
-        ✅ Logged in as <b>${user.name || 'Unnamed'}</b> (${user.email || 'No email'}) 
+        ✅ Logged in as <b>${user.name}</b> (${user.email})
         <a href="/auth/logout">Logout</a>
       `;
     } else {
-      console.warn('❌ Not logged in, status:', res.status);
       document.getElementById('authStatus').innerHTML = `
-        ❌ Not logged in<br>
-        <a href="/auth/google" id="loginLink">Login with Google</a>
+        ⚠️ Session error. Please log out and try again.
+        <a href="/auth/logout">Logout</a>
       `;
     }
+
   } catch (err) {
-    console.error('🚨 Error while checking auth:', err);
+    console.error('🚨 Auth error:', err);
     document.getElementById('authStatus').innerHTML = `
-      ⚠️ Could not verify login<br>
+      ❌ Not logged in<br>
       <a href="/auth/google" id="loginLink">Login with Google</a>
     `;
   }
 }
 
-
+loadRulesFromMemory();
