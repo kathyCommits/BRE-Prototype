@@ -436,6 +436,34 @@ document.addEventListener("DOMContentLoaded", () => {
   } else {
     console.warn("No stored rules found. Upload a JSON to get started.");
   }
+  
+  document.getElementById('proofForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    const resultBox = document.getElementById('uploadResult');
+    resultBox.textContent = 'Uploading...';
+  
+    try {
+      const response = await fetch('/api/proof', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      const result = await response.json();
+      if (response.ok) {
+        resultBox.innerHTML = `
+          ✅ File uploaded successfully<br>
+          Filename: ${result.metadata.filename}<br>
+          Uploaded by: ${result.metadata.uploadedBy}
+        `;
+      } else {
+        resultBox.innerHTML = '❌ Upload failed.';
+      }
+    } catch (error) {
+      resultBox.innerHTML = '❌ Upload failed: ' + error.message;
+    }
+  });   
 });
 
 async function checkAuth() {
@@ -459,6 +487,7 @@ async function checkAuth() {
         ✅ Logged in as <b>${user.name}</b> (${user.email})
         <a href="/auth/logout">Logout</a>
       `;
+      document.getElementById('uploadSection').style.display = 'block';
     } else {
       document.getElementById('authStatus').innerHTML = `
         ⚠️ Session error. Please log out and try again.

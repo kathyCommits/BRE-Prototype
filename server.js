@@ -1,8 +1,8 @@
-
-
-
 require('dotenv').config(); // must come first if using env vars
 console.log("Loaded SESSION_SECRET:", process.env.SESSION_SECRET);
+
+const multer = require('multer');
+const mkdirp = require('mkdirp'); // Helps create nested folders safely
 
 const cors = require('cors');
 
@@ -15,6 +15,13 @@ const path = require('path');
 
 const app = express();
 
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.status(401).json({ message: 'Not authenticated' });
+}
+
 app.use(session({
   
   secret: process.env.SESSION_SECRET || 'your_session_secret',
@@ -25,6 +32,53 @@ app.use(session({
     secure: false       // must be false for localhost (true only over HTTPS)
   }
 }));
+
+// Ensure upload folder exists
+mkdirp.sync(path.join(__dirname, 'uploads/proofs'));
+
+// Multer config
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, 'uploads/proofs'));
+  },
+  filename: function (req, file, cb) {
+    const timestamp = Date.now();
+    const cleanName = file.originalname.replace(/\s+/g, '_');
+    cb(null, `${timestamp}_${cleanName}`);
+  }
+});
+
+const proofUploader = multer({
+  storage: storage,
+  fileFilter: function (req, file, cb) {
+    const allowedTypes = [
+      'application/pdf',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation', // .pptx
+      'text/plain'
+    ];
+  
+    if (allowedTypes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only PDF, DOCX, PPTX, or TXT files are allowed'));
+    }
+  }
+  
+});
+
+const proofMetaFile = path.join(__dirname, 'uploads', 'proofMetadata.json');
+
+function saveProofMetadata(entry) {
+  let metadata = [];
+  if (fs.existsSync(proofMetaFile)) {
+    const raw = fs.readFileSync(proofMetaFile, 'utf-8');
+    metadata = JSON.parse(raw || '[]');
+  }
+
+  metadata.push(entry);
+  fs.writeFileSync(proofMetaFile, JSON.stringify(metadata, null, 2));
+}
 
 app.use(cors({
   origin: 'http://localhost:3000', // your frontend origin
@@ -207,6 +261,35 @@ app.delete('/api/rules/:id', (req, res) => {
   res.sendStatus(200);
 });
 
+app.post('/api/proof', ensureAuthenticated, proofUploader.single('proofFile'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ message: 'No file uploaded' });
+  }
+
+  const uploadedBy = req.user?.name || 'Unknown';
+  const email = req.user?.email || 'Unknown';
+  const timestamp = new Date().toISOString();
+
+  const metadataEntry = {
+  filename: req.file.filename,
+  uploadedBy,
+  email,
+  timestamp
+  };
+
+  saveProofMetadata(metadataEntry);
+
+  console.log('📎 Proof file uploaded:', req.file.filename);
+  console.log('📝 Metadata saved:', metadataEntry);
+
+  res.json({
+  message: 'File uploaded successfully',
+  metadata: metadataEntry
+  });
+
+  
+});
+
 
 app.get('/auth/google',
   passport.authenticate('google', {
@@ -255,3 +338,5 @@ app.get('*', (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
