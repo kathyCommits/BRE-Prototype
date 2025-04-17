@@ -437,33 +437,42 @@ document.addEventListener("DOMContentLoaded", () => {
     console.warn("No stored rules found. Upload a JSON to get started.");
   }
   
-  document.getElementById('proofForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const formData = new FormData(form);
-    const resultBox = document.getElementById('uploadResult');
-    resultBox.textContent = 'Uploading...';
+  document.getElementById('uploadProofButton').addEventListener('click', () => {
+    const fileInput = document.getElementById('proofFileInput');
+    fileInput.click();
   
-    try {
-      const response = await fetch('/api/proof', {
-        method: 'POST',
-        body: formData,
-      });
+    fileInput.onchange = async () => {
+      const file = fileInput.files[0];
+      if (!file) return;
   
-      const result = await response.json();
-      if (response.ok) {
+      const formData = new FormData();
+      formData.append('proofFile', file);
+  
+      const resultBox = document.getElementById('uploadResult');
+      resultBox.textContent = 'Uploading...';
+  
+      try {
+        const res = await fetch('/api/proof', {
+          method: 'POST',
+          credentials: 'include',
+          body: formData,
+        });
+  
+        if (!res.ok) throw new Error(`Upload failed: ${res.status}`);
+  
+        const data = await res.json();
+  
         resultBox.innerHTML = `
           ✅ File uploaded successfully<br>
-          Filename: ${result.metadata.filename}<br>
-          Uploaded by: ${result.metadata.uploadedBy}
+          Filename: ${data.metadata.filename}<br>
+          Uploaded by: ${data.metadata.uploadedBy}
         `;
-      } else {
-        resultBox.innerHTML = '❌ Upload failed.';
+      } catch (err) {
+        console.error('Error uploading file:', err);
+        resultBox.innerHTML = '❌ Not Authenticated. Please Login';
       }
-    } catch (error) {
-      resultBox.innerHTML = '❌ Upload failed: ' + error.message;
-    }
-  });   
+    };
+  });  
 });
 
 async function checkAuth() {

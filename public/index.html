@@ -48,16 +48,13 @@
     <button onclick="document.getElementById('uploadInput').click()">Upload Rules</button>
   </div>  
 
-  <div id="uploadSection" style="display: none; margin-top: 20px;">
+  <div id="uploadSection" style="margin-top: 20px;">
     <h3>Upload Supporting Document</h3>
-    <form id="proofForm" enctype="multipart/form-data">
-      <input type="file" name="proofFile" accept=".pdf,.docx,.txt" required />
-      <button type="submit">Upload Proof</button>
-
-
-    </form>
+    <input type="file" id="proofFileInput" accept=".pdf,.docx,.txt" style="display: none" />
+    <button id="uploadProofButton">Upload Proof</button>
     <div id="uploadResult" style="margin-top: 10px;"></div>
   </div>
+  
   
   <!-- Rule Form -->
   <div id="newRuleForm" style="display: none;">
