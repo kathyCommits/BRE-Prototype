@@ -69,3 +69,9 @@ dist/
 
 # Session or local DB storage (if any)
 data/
+
+
+.env
+node_modules/
+brew-ui-main/node_modules/
+
