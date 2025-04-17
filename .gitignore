@@ -1,0 +1,71 @@
+# Ignore Node.js dependencies
+node_modules/
+
+# Ignore environment variables
+.env
+
+# Ignore local log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore VSCode settings (optional)
+.vscode/
+
+# Ignore build artifacts (if applicable)
+dist/
+build/
+
+# Ignore backup files / temp
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# Ignore system files
+*.log
+
+# Ignore database or session storage (if any)
+data/
+
+# Ignore compiled files (if ever generated)
+*.tsbuildinfo
+
+# Ignore frontend build (if any React/Vite/etc.)
+brew-ui-main/node_modules/
+brew-ui-main/.env
+brew-ui-main/build/
+brew-ui-main/dist/
+
+
+# Node.js dependencies
+node_modules/
+
+# Environment variables
+.env
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local config and cache
+.vscode/
+*.swp
+*.tmp
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Build artifacts (if you ever build/minify)
+build/
+dist/
+
+# Session or local DB storage (if any)
+data/
