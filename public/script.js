@@ -2,8 +2,23 @@
 // === GLOBAL FUNCTIONS ===
 
 async function loadRules(filterCategory = '') {
-  const res = await fetch('/api/rules');
-  const rules = await res.json();
+  let rules;
+
+  // ✅ Load from localStorage if available
+  const stored = localStorage.getItem("breRules");
+  if (stored) {
+    try {
+      rules = JSON.parse(stored);
+    } catch (e) {
+      console.warn("Failed to parse breRules from localStorage, falling back to API.", e);
+    }
+  }
+
+  if (!rules) {
+    const res = await fetch('/api/rules');
+    rules = await res.json();
+  }
+
   const tableBody = document.getElementById('rulesTable');
   tableBody.innerHTML = '';
 
@@ -14,12 +29,19 @@ async function loadRules(filterCategory = '') {
     categories.add(cat);
 
     if (!filterCategory || cat === filterCategory) {
+      const value =
+  typeof rule?.ruleConfig?.value === "string" && !rule?.ruleConfig?.value.includes("L")
+    ? rule.ruleConfig.value
+    : rule.operand?.operandDefinition?.find?.(op =>
+        op.operandType === "CONSTANT" && !op.value?.includes("L") && !op.value?.includes("deviationRuleV2")
+      )?.value || '';
+
       const row = document.createElement('tr');
       row.innerHTML = `
         <td>${index + 1}</td>
         <td><input type="text" id="param-${rule.ruleId}" value="${rule.ruleCheckpointParameter || rule.parameter || ''}"></td>
         <td><input type="text" id="cat-${rule.ruleId}" value="${cat}"></td>
-        <td><input type="text" id="val-${rule.ruleId}" value="${rule.editableValue || rule.value || rule.ruleConfig?.value || ''}"></td>
+        <td><input type="text" id="val-${rule.ruleId}" value="${value}"></td>
         <td><input type="text" id="desc-${rule.ruleId}" value="${rule.ruleMetadata?.ruleDescription || rule.ruleDescription || ''}"></td>
         <td>
           <button onclick="saveRule('${rule.ruleId}')">Save</button>
@@ -30,6 +52,7 @@ async function loadRules(filterCategory = '') {
     }
   });
 
+  // ✅ Also update dropdowns and memory
   const filterSelect = document.getElementById('categoryFilter');
   if (filterSelect && filterSelect.options.length === 1) {
     [...categories].sort().forEach(cat => {
@@ -41,20 +64,20 @@ async function loadRules(filterCategory = '') {
   }
 
   const filterDropdown = document.getElementById("categoryFilter");
-const categoryList = document.getElementById("categories");
+  const categoryList = document.getElementById("categories");
 
   window.__breRules = rules;
 
-if (filterDropdown && categoryList) {
-  categoryList.innerHTML = ''; // clear previous
-  [...filterDropdown.options].forEach(opt => {
-    if (opt.value && opt.value !== 'All') {
-      const option = document.createElement("option");
-      option.value = opt.value;
-      categoryList.appendChild(option);
-    }
-  });
-}
+  if (filterDropdown && categoryList) {
+    categoryList.innerHTML = '';
+    [...filterDropdown.options].forEach(opt => {
+      if (opt.value && opt.value !== 'All') {
+        const option = document.createElement("option");
+        option.value = opt.value;
+        categoryList.appendChild(option);
+      }
+    });
+  }
 }
 
 async function saveRule(id) {
@@ -205,8 +228,7 @@ function filterRulesByCategory() {
 
 // === DOM INITIALIZATION ===
 document.addEventListener("DOMContentLoaded", function () {
-  
-  
+
   const thresholdSaveBtn = document.getElementById("saveBtn");
   if (thresholdSaveBtn) {
   thresholdSaveBtn.addEventListener("click", function () {
@@ -276,6 +298,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+checkAuth();
+
 // === Other helper functions like deleteRule, filterRulesByCategory ===
 
 function downloadRules(latest = true) {
@@ -332,16 +356,19 @@ function uploadRules(event) {
       }
 
       window.__breRules = rules;
+      localStorage.setItem("breRules", JSON.stringify(rules));
       alert("Rules imported successfully!");
+
 
       // ✅ Safely load rules after DOM is ready
       setTimeout(() => {
-      const table = document.getElementById("ruleTableBody");
+        const table = document.getElementById("rulesTable"); // ✅ matches your DOM
+        
         if (table) {
-      loadRules(); // calls window.__breRules and populates table
+      loadRulesFromMemory(); // calls window.__breRules and populates table
         } else {
         alert("DOM not ready. Retrying load...");
-        setTimeout(() => loadRules(), 100); // retry after short delay
+        setTimeout(() => loadRulesFromMemory(), 100); // retry after short delay
         }
       }, 50);
 
@@ -358,7 +385,7 @@ function uploadRules(event) {
 // bypassing the backend API and directly displaying the imported rules.
 
 function loadRulesFromMemory() {
-  const ruleTable = document.getElementById("ruleTableBody");
+  const ruleTable = document.getElementById("rulesTable");
   if (!ruleTable) {
     alert("Error: Could not find table body in DOM.");
     return;
@@ -371,22 +398,15 @@ function loadRulesFromMemory() {
 
     const param = rule.ruleCheckpointParameter || "";
     const category = rule.ruleTemplateGroupCategory || "";
-    const description =
-      rule.ruleMetadata?.ruleDescription || "";
+    const description = rule.ruleMetadata?.ruleDescription || "";
 
-    let value = "";
-
-    if (rule.operand?.operandType === "CONDITION") {
-      // Threshold-style logic
-      value = rule.ruleConfig?.value || rule.value || "";
-    } else if (rule.operand?.operandType === "FUNCTION") {
-      // Show readable string for function-based logic
-      const config = rule.ruleConfig || {};
-      const allowed = config.allowedList || config.blockList || "";
-      const fallbackDisplay =
-        rule.ruleMetadata?.orderOfOccurence?.[0]?.displayName || "";
-      value = allowed || fallbackDisplay || rule.operand?.value || "[function]";
-    }
+    // ✅ ONLY use ruleConfig.value
+    const value =
+  typeof rule?.ruleConfig?.value === "string" && !rule?.ruleConfig?.value.includes("L")
+    ? rule.ruleConfig.value
+    : rule.operand?.operandDefinition?.find?.(op =>
+        op.operandType === "CONSTANT" && !op.value?.includes("L") && !op.value?.includes("deviationRuleV2")
+      )?.value || '';
 
     const row = document.createElement("tr");
     row.innerHTML = `
@@ -404,5 +424,48 @@ function loadRulesFromMemory() {
   });
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+  const stored = localStorage.getItem("breRules");
+  if (stored) {
+    try {
+      window.__breRules = JSON.parse(stored);
+      loadRulesFromMemory();  // use stored data
+    } catch (e) {
+      console.warn("Error loading rules from localStorage on reload:", e);
+    }
+  } else {
+    console.warn("No stored rules found. Upload a JSON to get started.");
+  }
+});
 
-loadRules();
+async function checkAuth() {
+  document.getElementById('authStatus').innerHTML = '🔄 Checking login...';
+  try {
+    const res = await fetch('/auth/user', {
+      credentials: 'include',
+    });
+
+    if (res.status === 200) {
+      const user = await res.json();
+      console.log('✅ Fetched user:', user);
+      document.getElementById('authStatus').innerHTML = `
+        ✅ Logged in as <b>${user.name || 'Unnamed'}</b> (${user.email || 'No email'}) 
+        <a href="/auth/logout">Logout</a>
+      `;
+    } else {
+      console.warn('❌ Not logged in, status:', res.status);
+      document.getElementById('authStatus').innerHTML = `
+        ❌ Not logged in<br>
+        <a href="/auth/google" id="loginLink">Login with Google</a>
+      `;
+    }
+  } catch (err) {
+    console.error('🚨 Error while checking auth:', err);
+    document.getElementById('authStatus').innerHTML = `
+      ⚠️ Could not verify login<br>
+      <a href="/auth/google" id="loginLink">Login with Google</a>
+    `;
+  }
+}
+
+

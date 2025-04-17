@@ -17,6 +17,8 @@
 <body>
   <h1>BRE Rules Editor</h1>
 
+  <div id="authStatus" style="margin: 10px 0;"></div>
+
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
     <button onclick="toggleAddRuleForm()">Add Rule</button>
     <div>
@@ -114,5 +116,46 @@
   </script>
   <!-- ✅ Good version -->
 <script src="script.js" defer></script>
+
+<script>
+  async function checkAuth() {
+    try {
+      const res = await fetch('/auth/user', {
+      credentials: 'include'
+      });
+
+      const user = await res.json();
+      console.log('👤 Fetched user:', user);
+
+
+      const email = user.emails?.[0]?.value;
+      const name = user.displayName;
+
+      document.getElementById('authStatus').innerHTML = `
+        ✅ Logged in as <strong>${name}</strong> (${email}) &nbsp;
+        <a href="/auth/logout">Logout</a>
+      `;
+
+      // OPTIONAL: unlock buttons/features here
+      window.loggedInUser = email;
+
+      // re-load rules if table is empty (or always, if you prefer)
+      if (typeof loadRulesFromMemory === 'function') {
+      loadRulesFromMemory();
+      }
+
+    } catch {
+      document.getElementById('authStatus').innerHTML = `
+        <a href="/auth/google" style="font-weight: bold;">Login with Google</a>
+        <a href="/auth/google" id="loginLink">Login with Google</a>
+      `;
+
+      // OPTIONAL: disable buttons/features here
+    }
+  }
+
+  checkAuth();
+</script>
+
 </body>
 </html>

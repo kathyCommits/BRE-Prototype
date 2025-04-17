@@ -1,10 +1,113 @@
+
+
+
+require('dotenv').config(); // must come first if using env vars
+console.log("Loaded SESSION_SECRET:", process.env.SESSION_SECRET);
+
+const cors = require('cors');
+
 const express = require('express');
+const session = require('express-session'); // 👈 This needs to come BEFORE you use `session`
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const fs = require('fs');
 const path = require('path');
+
 const app = express();
+
+app.use(session({
+  
+  secret: process.env.SESSION_SECRET || 'your_session_secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    sameSite: 'lax',   // allow cross-site cookies from Google auth
+    secure: false       // must be false for localhost (true only over HTTPS)
+  }
+}));
+
+app.use(cors({
+  origin: 'http://localhost:3000', // your frontend origin
+  credentials: true                // allow cookies
+}));
+
+
+app.use((req, res, next) => {
+  console.log('🔥 Session middleware hit');
+  next();
+});
+
+app.use(passport.initialize());
+app.use((req, res, next) => {
+  console.log('✅ Passport initialized');
+  next();
+});
+
+app.use(passport.session());
+app.use((req, res, next) => {
+  console.log('🌀 Passport session middleware hit');
+  next();
+});
+
+
+
+
+passport.use(new GoogleStrategy({
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: 'http://localhost:3000/auth/google/callback'
+}, (accessToken, refreshToken, profile, done) => {
+  const user = {
+    name: profile.displayName,
+    email: profile.emails?.[0]?.value || null,
+    id: profile.id
+  };
+  return done(null, user);
+}));
+
+passport.serializeUser((user, done) => {
+  console.log('👉 SERIALIZING USER:', user);
+  done(null, user);
+});
+
+passport.deserializeUser((obj, done) => {
+  console.log('🔄 DESERIALIZING USER:', obj);
+  done(null, obj);
+});
+
+app.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/' }),
+  (req, res) => {
+    req.login(req.user, (err) => {
+      if (err) return next(err);
+      res.redirect('/');
+    });
+});
+
+passport.serializeUser((user, done) => {
+
+  console.log('👉 SERIALIZING USER:', user);
+
+  
+  done(null, user);
+});
+passport.deserializeUser((obj, done) => {
+  console.log('🔄 DESERIALIZING USER:', obj);
+
+
+  done(null, obj);
+});
+
 const PORT = 3000;
 
 app.use(express.json());
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  next();
+});
+
 
 // Serve frontend build from public folder
 app.use(express.static(path.join(__dirname, 'public')));
@@ -113,7 +216,48 @@ app.delete('/api/rules/:id', (req, res) => {
   res.sendStatus(200);
 });
 
-// Fallback route to serve index.html for any unknown route
+
+app.get('/auth/google',
+  passport.authenticate('google', {
+    scope: ['profile', 'email']
+  })
+);
+
+
+app.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/' }),
+  (req, res) => {
+    req.login(req.user, (err) => {
+      if (err) return next(err);
+      console.log('✅ LOGGED IN USER:', req.user);
+      res.redirect('/');
+    });
+  }
+);
+
+
+app.get('/auth/logout', (req, res) => {
+  req.logout(() => {
+    res.redirect('/');
+  });
+});
+
+app.get('/auth/user', (req, res) => {
+  if (req.isAuthenticated()) {
+    console.log("✅ SESSION USER:", req.user);
+    // Send simplified structure
+    return res.json({
+      name: req.user.name,             // ← FIXED LINE
+      email: req.user.email,
+      id: req.user.id
+    });
+  } else {
+    return res.status(401).json({ message: 'Not logged in' });
+  }
+});
+
+
+// 2. 🔚 Catch-all LAST
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/index.html'));
 });
