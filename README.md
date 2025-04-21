@@ -11,7 +11,9 @@ This is a prototype for a lightweight front-end tool to create, view, and manage
 - Displays rules in tabular format  
 - Reads from and writes to a structured JSON format
 - proto-Validation Layer for selected threshold rules
-- Download button and an audit log!!
+- Google OAuth
+- Upload Proof of Request for changes to the Rules
+- View table for changes made
 - Supports importing existing `breRules.json` files  
 - Built with Vanilla JS, HTML, CSS, and Node.js
 
