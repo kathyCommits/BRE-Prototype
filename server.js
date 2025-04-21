@@ -36,6 +36,19 @@ app.use(session({
 // Ensure upload folder exists
 mkdirp.sync(path.join(__dirname, 'uploads/proofs'));
 
+app.get('/uploads/proofs/:filename', ensureAuthenticated, (req, res) => {
+  const filePath = path.join(__dirname, 'uploads', 'proofs', req.params.filename);
+
+  // Check if file exists
+  if (fs.existsSync(filePath)) {
+    // Force download
+    res.download(filePath, req.params.filename);
+  } else {
+    res.status(404).send('File not found');
+  }
+});
+
+
 // Multer config
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -329,6 +342,51 @@ app.get('/auth/user', (req, res) => {
     console.log('⛔ Not authenticated in /auth/user');
     return res.status(401).json({ message: 'Not logged in' });
   }
+});
+
+app.get('/api/proof/metadata', ensureAuthenticated, (req, res) => {
+  try {
+    const raw = fs.existsSync(proofMetaFile)
+      ? fs.readFileSync(proofMetaFile, 'utf-8')
+      : '[]';
+    const metadata = JSON.parse(raw);
+    res.json(metadata);
+  } catch (err) {
+    console.error('Error reading proof metadata:', err);
+    res.status(500).json({ message: 'Failed to load metadata' });
+  }
+});
+
+app.get('/download/proof/:filename', ensureAuthenticated, (req, res) => {
+  const filePath = path.join(__dirname, 'uploads/proofs', req.params.filename);
+
+  if (fs.existsSync(filePath)) {
+    res.setHeader('Content-Disposition', `attachment; filename="${req.params.filename}"`);
+    res.setHeader('Content-Type', 'application/octet-stream');
+    res.download(filePath); // force browser download
+  } else {
+    res.status(404).send('File not found');
+  }
+});
+
+app.post('/api/proof/snapshot', ensureAuthenticated, (req, res) => {
+  const { filename, rules } = req.body;
+  if (!filename || !rules) {
+    return res.status(400).json({ message: 'Missing filename or rules' });
+  }
+
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const versionedName = `${filename}_${timestamp}.json`;
+  const versionedPath = path.join(__dirname, 'uploads', 'proofs', versionedName);
+
+  // ✅ Save versioned snapshot
+  fs.writeFileSync(versionedPath, JSON.stringify(rules, null, 2));
+
+  // ✅ ALSO save/update the base .json file
+  const latestSnapshotPath = path.join(__dirname, 'uploads', 'proofs', `${filename}.json`);
+  fs.writeFileSync(latestSnapshotPath, JSON.stringify(rules, null, 2));
+
+  res.json({ message: 'Snapshot saved' });
 });
 
 

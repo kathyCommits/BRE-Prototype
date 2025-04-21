@@ -54,14 +54,16 @@ async function loadRules(filterCategory = '') {
 
   // ✅ Also update dropdowns and memory
   const filterSelect = document.getElementById('categoryFilter');
-  if (filterSelect && filterSelect.options.length === 1) {
+    if (filterSelect) {
+    filterSelect.innerHTML = '<option value="">All</option>';
     [...categories].sort().forEach(cat => {
       const opt = document.createElement('option');
       opt.value = cat;
       opt.textContent = cat;
       filterSelect.appendChild(opt);
-    });
-  }
+      });
+    }
+  
 
   const filterDropdown = document.getElementById("categoryFilter");
   const categoryList = document.getElementById("categories");
@@ -130,6 +132,35 @@ if (rule) {
     alert(`Error updating rule: ${err.message}`);
   }
 }
+
+// Utility function to save current JSON snapshot after proof upload
+
+async function saveProofSnapshot() {
+  const filename = localStorage.getItem('proofFilename');
+  if (!filename) {
+    console.warn("🛑 No proof filename set. Cannot save snapshot.");
+    return;
+  }
+
+  try {
+    const response = await fetch('/api/proof/snapshot', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ filename, rules: window.__breRules }),
+    });
+    const result = await response.json();
+    console.log("📸 Snapshot saved:", result.message);
+  } catch (err) {
+    console.error("❌ Error saving snapshot:", err);
+  }
+}
+
+
+// Call this function after a rule is saved, deleted, or added
+// Example:
+// await submitValidatedRule(...);
+saveProofSnapshot();
 
 function addNewRule() {
   const tableBody = document.getElementById('rulesTable');
@@ -228,7 +259,7 @@ async function deleteRule(id) {
 
 function filterRulesByCategory() {
   const selected = document.getElementById('categoryFilter').value;
-  loadRulesFromMemory(selected);
+  loadRules(selected);
 }
 
 // === DOM INITIALIZATION ===
@@ -312,29 +343,6 @@ checkAuth();
 
 // === Other helper functions like deleteRule, filterRulesByCategory ===
 
-function downloadRules(latest = true) {
-  const rules = window.__breRules || [];
-
-  const jsonStr = JSON.stringify(rules, null, 2);
-  const blob = new Blob([jsonStr], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement("a");
-  a.href = url;
-
-  if (latest) {
-    a.download = "breRules.json";
-  } else {
-    const timestamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-");
-    a.download = `breRules_${timestamp}.json`;
-  }
-
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-
 function uploadRules(event) {
   const file = event.target.files[0];
   if (!file) return;
@@ -376,6 +384,7 @@ function uploadRules(event) {
         
         if (table) {
       loadRulesFromMemory(); // calls window.__breRules and populates table
+      loadRules();
         } else {
         alert("DOM not ready. Retrying load...");
         setTimeout(() => loadRulesFromMemory(), 100); // retry after short delay
@@ -496,10 +505,23 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.setItem('proofFilename', result.metadata.filename);
   
           resultBox.innerHTML = `
-            ✅ File uploaded successfully<br>
-            Filename: ${result.metadata.filename}<br>
-            Uploaded by: ${result.metadata.uploadedBy}
+          ✅ File uploaded successfully<br>
+          Filename: ${result.metadata.filename}<br>
+          Uploaded by: ${result.metadata.uploadedBy}<br>
+          <button id="downloadSnapshotBtn">📥 Download Snapshot JSON</button>
           `;
+
+          document.getElementById('downloadSnapshotBtn').addEventListener('click', () => {
+          const filename = localStorage.getItem('proofFilename');
+          if (!filename) return;
+          // Open the latest snapshot (optional)
+          const a = document.createElement('a');
+          a.href = `/download/proof/${filename}.json`;
+          a.download = `${filename}.json`;
+          a.click();
+
+          });
+
         } catch (err) {
           resultBox.innerHTML = '❌ Upload failed: ' + err.message;
         }
@@ -508,6 +530,43 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("❌ You must be logged in to upload a proof document.");
     }
   });   
+
+  const historyBtn = document.getElementById('toggleHistory');
+  const historySection = document.getElementById('uploadHistorySection');
+  const historyTable = document.getElementById('uploadHistoryTable');
+
+  if (historyBtn && historySection && historyTable) {
+  historyBtn.addEventListener('click', async () => {
+    const currentlyVisible = historySection.style.display === 'block';
+    historySection.style.display = currentlyVisible ? 'none' : 'block';
+    historyBtn.textContent = currentlyVisible ? '📜 View Upload History' : '🙈 Hide Upload History';
+
+    if (!currentlyVisible) {
+      try {
+        const res = await fetch('/api/proof/metadata', { credentials: 'include' });
+        const data = await res.json();
+
+        historyTable.innerHTML = ''; // Clear previous entries
+
+        data.reverse().forEach(entry => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${entry.filename}</td>
+            <td>${entry.uploadedBy}</td>
+            <td>${entry.email}</td>
+            <td>${new Date(entry.timestamp).toLocaleString()}</td>
+            <td><a href="/download/proof/${entry.filename}">Download</a></td>
+          `;
+          historyTable.appendChild(row);
+        });
+
+      } catch (err) {
+        historyTable.innerHTML = `<tr><td colspan="5">⚠️ Failed to load history</td></tr>`;
+        console.error('Error loading proof metadata:', err);
+      }
+    }
+  });
+}
 });
 
 async function checkAuth() {
@@ -526,11 +585,14 @@ async function checkAuth() {
     const user = await res.json();
     console.log('📦 Raw user response:', user);
 
-    const filename = localStorage.getItem('proofFilename');
-    if (filename) {
-    const resultBox = document.getElementById('uploadResult');
-    resultBox.innerHTML += `<br>📎 You previously uploaded: <strong>${filename}</strong>`;
-    }
+  
+      const filename = localStorage.getItem('proofFilename');
+      if (!filename) {
+        alert("⚠️ No snapshot available to download.");
+        return;
+      }
+      window.open(`/download/proof/${filename}.json`, '_blank');
+      
 
     if (user && user.name && user.email) {
       document.getElementById('authStatus').innerHTML = `

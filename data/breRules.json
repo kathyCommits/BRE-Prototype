@@ -7,7 +7,7 @@
       "ruleType": "CUSTOM",
       "policyType": 1,
       "ruleConfig": {
-        "value": "12314"
+        "value": "12"
       },
       "applicantMetaData": [
         {
@@ -54,8 +54,7 @@
       "ruleType": "CUSTOM",
       "policyType": 1,
       "ruleConfig": {
-        "param": "negativeWilfullDefaulter",
-        "blockList": "L1,L2,L3,L4,L5,L6"
+        "value": "40"
       },
       "applicantMetaData": [
         {
@@ -92,7 +91,9 @@
             "displayName": "If value in L1- L6, fail"
           }
         ]
-      }
+      },
+      "parameter": "PEP Check/Negative Willful Defaulter Check/Negative Google Check etc.",
+      "ruleDescription": "No deviation allowed"
     },
     {
       "ruleId": "195dbe048c82c648da8d9392",
@@ -4301,7 +4302,7 @@
         "ruleDescription": "Drop in ATNW should be more than -20%, with deviation -40% allowed"
       },
       "ruleConfig": {
-        "value": "-30"
+        "value": "-40"
       },
       "parameter": "Drop in ATNW",
       "ruleDescription": "Drop in ATNW should be more than -20%, with deviation -40% allowed"

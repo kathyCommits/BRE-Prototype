@@ -27,6 +27,23 @@
         <option value="">All</option>
       </select>
     </div>
+    
+    <div id="uploadHistorySection" style="display: none; margin-top: 10px;">
+      <h3>📁 Uploaded Proof Files</h3>
+      <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+          <tr>
+            <th>Filename</th>
+            <th>Uploaded By</th>
+            <th>Email</th>
+            <th>Timestamp</th>
+            <th>Download</th>
+          </tr>
+        </thead>
+        <table id="uploadHistoryTable" style="width: 100%; border-collapse: collapse;">
+      </table>
+    </div>
+    
   </div>
 
   <!-- Toggleable Rule Type and Form -->
@@ -41,15 +58,19 @@
   </div>
 
   <!-- Add this where your Add Rule button or header is -->
-  <div style="margin-top: 10px;">
-    <button onclick="downloadRules(true)">Download Current Rules</button>
-    <button onclick="downloadRules(false)">Download Backup</button>
-    <input type="file" id="uploadInput" accept=".json" style="display: none;" onchange="uploadRules(event)">
-    <button onclick="handleJsonUploadClick()">Upload Rules</button>
-  </div>  
+  <!-- Row for Rule Downloads + Upload History (same line) -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+      <div>
+        <button onclick="handleJsonUploadClick()">Upload Rules</button>
+      </div>
+      <div>
+      <button id="toggleHistory">📜 View Upload History</button>
+     </div>
+    </div>
+
 
   <div id="uploadSection" style="margin-top: 20px;">
-    <h3>Upload Supporting Document</h3>
+    <h3>Upload Proof of Request Document</h3>
     <input type="file" id="proofFileInput" accept=".pdf,.docx,.txt" style="display: none" />
     <button id="uploadProofButton">Upload Proof of Request</button>
     <div id="uploadResult" style="margin-top: 10px;"></div>
