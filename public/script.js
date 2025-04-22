@@ -124,10 +124,12 @@ if (rule) {
   if (!rule.ruleMetadata) rule.ruleMetadata = {};
   rule.ruleMetadata.ruleDescription = newDescription;
 
-  loadRulesFromMemory(); // 👈 refresh visible table row values
+  await loadRules(); // 👈 refresh visible table row values
 }
 
     alert('Rule updated!');
+    await saveProofSnapshot();
+
   } catch (err) {
     alert(`Error updating rule: ${err.message}`);
   }
@@ -136,6 +138,10 @@ if (rule) {
 // Utility function to save current JSON snapshot after proof upload
 
 async function saveProofSnapshot() {
+  try {
+    await saveProofSnapshot();
+  } catch (e) {
+    console.warn("⚠️ Snapshot failed:", e);
   const filename = localStorage.getItem('proofFilename');
   if (!filename) {
     console.warn("🛑 No proof filename set. Cannot save snapshot.");
@@ -154,7 +160,7 @@ async function saveProofSnapshot() {
   } catch (err) {
     console.error("❌ Error saving snapshot:", err);
   }
-}
+}}
 
 
 // Call this function after a rule is saved, deleted, or added
@@ -238,6 +244,7 @@ delete window.__pendingValidationRules[newId]; // cleanup
 
   if (res.ok) {
     alert('Validated rule added!');
+    await saveProofSnapshot();
     loadRules();
   } else {
     alert('Failed to add validated rule.');
@@ -251,6 +258,7 @@ async function deleteRule(id) {
 
   if (res.ok) {
     alert('Rule deleted!');
+    await saveProofSnapshot();
     loadRules();
   } else {
     alert('Error deleting rule.');
@@ -343,6 +351,17 @@ checkAuth();
 
 // === Other helper functions like deleteRule, filterRulesByCategory ===
 
+async function isUserLoggedIn() {
+  try {
+    const res = await fetch('/auth/user', { credentials: 'include' });
+    if (!res.ok) return false;
+    const data = await res.json();
+    return data?.email;
+  } catch {
+    return false;
+  }
+}
+
 function uploadRules(event) {
   const file = event.target.files[0];
   if (!file) return;
@@ -421,7 +440,7 @@ function loadRulesFromMemory() {
 
     // ✅ ONLY use ruleConfig.value
     const value =
-  typeof rule?.ruleConfig?.value === "string" && !rule?.ruleConfig?.value.includes("L")
+    typeof rule?.ruleConfig?.value === "string" && !rule?.ruleConfig?.value.includes("L")
     ? rule.ruleConfig.value
     : rule.operand?.operandDefinition?.find?.(op =>
         op.operandType === "CONSTANT" && !op.value?.includes("L") && !op.value?.includes("deviationRuleV2")
@@ -441,6 +460,17 @@ function loadRulesFromMemory() {
     `;
     ruleTable.appendChild(row);
   });
+  const filterDropdown = document.getElementById("categoryFilter");
+  const categories = new Set(rules.map(r => r.ruleTemplateGroupCategory || ''));
+  if (filterDropdown) {
+  filterDropdown.innerHTML = '<option value="">All</option>';
+  [...categories].sort().forEach(cat => {
+    const opt = document.createElement("option");
+    opt.value = cat;
+    opt.textContent = cat;
+    filterDropdown.appendChild(opt);
+  });
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -591,7 +621,6 @@ async function checkAuth() {
         alert("⚠️ No snapshot available to download.");
         return;
       }
-      window.open(`/download/proof/${filename}.json`, '_blank');
       
 
     if (user && user.name && user.email) {
@@ -622,25 +651,23 @@ async function checkAuth() {
 
 async function handleJsonUploadClick() {
   const proofUploaded = localStorage.getItem('proofFilename');
+  const loggedIn = await isUserLoggedIn();
 
-  try {
-    const res = await fetch('/auth/user', {
-      credentials: 'include',
-    });
-
-    if (!res.ok) {
-      throw new Error("Not logged in");
-    }
-
-    if (!proofUploaded) {
-      alert("⚠️ Please upload a proof document before uploading JSON rules.");
-      return;
-    }
-
-    document.getElementById('uploadInput').click();
-
-  } catch (err) {
+  if (!loggedIn) {
     alert("❌ You must be logged in to upload rules.");
+    return;
   }
+
+  if (!proofUploaded) {
+    alert("⚠️ Please upload a proof document before uploading JSON rules.");
+    return;
+  }
+
+  // Now safely proceed
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = ".json";
+  input.onchange = uploadRules;
+  input.click();
 }
 

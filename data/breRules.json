@@ -7,7 +7,7 @@
       "ruleType": "CUSTOM",
       "policyType": 1,
       "ruleConfig": {
-        "value": "12890079"
+        "value": "12007"
       },
       "applicantMetaData": [
         {
@@ -4324,6 +4324,25 @@
         "parameter": "age"
       },
       "parameter": "age",
+      "ruleDescription": ""
+    },
+    {
+      "ruleId": "new-92posnf3c",
+      "ruleCheckpointParameter": "Age",
+      "ruleTemplateGroupCategory": "Financial Details",
+      "ruleMetadata": {
+        "ruleDescription": ""
+      },
+      "ruleConfig": {
+        "value": "30"
+      },
+      "validation": {
+        "type": "threshold",
+        "operator": ">=",
+        "value": 21,
+        "parameter": "Age"
+      },
+      "parameter": "Age",
       "ruleDescription": ""
     }
   ],
