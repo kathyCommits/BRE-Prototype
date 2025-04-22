@@ -138,10 +138,6 @@ if (rule) {
 // Utility function to save current JSON snapshot after proof upload
 
 async function saveProofSnapshot() {
-  try {
-    await saveProofSnapshot();
-  } catch (e) {
-    console.warn("⚠️ Snapshot failed:", e);
   const filename = localStorage.getItem('proofFilename');
   if (!filename) {
     console.warn("🛑 No proof filename set. Cannot save snapshot.");
@@ -160,8 +156,7 @@ async function saveProofSnapshot() {
   } catch (err) {
     console.error("❌ Error saving snapshot:", err);
   }
-}}
-
+}
 
 // Call this function after a rule is saved, deleted, or added
 // Example:
@@ -600,7 +595,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function checkAuth() {
-  document.getElementById('authStatus').innerHTML = '🔄 Checking login...';
+  const authStatus = document.getElementById('authStatus');
+  let user = null;
 
   try {
     const res = await fetch('/auth/user', {
@@ -612,42 +608,42 @@ async function checkAuth() {
       throw new Error('No session found');
     }
 
-    const user = await res.json();
+    user = await res.json();
     console.log('📦 Raw user response:', user);
 
-  
-      const filename = localStorage.getItem('proofFilename');
-      if (!filename) {
-        alert("⚠️ No snapshot available to download.");
-        return;
-      }
-      
+    const filename = localStorage.getItem('proofFilename');
 
-    if (user && user.name && user.email) {
-      document.getElementById('authStatus').innerHTML = `
+    if (user?.name && user?.email) {
+      authStatus.innerHTML = `
         ✅ Logged in as <b>${user.name}</b> (${user.email})
         <a href="/auth/logout">Logout</a>
       `;
-      document.getElementById('uploadSection').style.display = 'block';
+
+      const uploadSection = document.getElementById('uploadSection');
+      if (uploadSection) uploadSection.style.display = 'block';
+
+      if (!filename) {
+        console.warn("🟡 No proof uploaded yet");
+      }
     } else {
-      document.getElementById('authStatus').innerHTML = `
-        ⚠️ Session error. Please log out and try again.
-        <a href="/auth/logout">Logout</a>
-      `;
+      throw new Error("User data incomplete");
     }
 
   } catch (err) {
     console.error('🚨 Auth error:', err);
-    document.getElementById('authStatus').innerHTML = `
-      ❌ Not logged in<br>
-      <a href="/auth/google" id="loginLink">Login with Google</a>
-    `;
+    if (authStatus) {
+      authStatus.innerHTML = `
+        ❌ Not logged in<br>
+        <a href="/auth/google" id="loginLink">Login with Google</a>
+      `;
+    }
   }
 
-  if (!user || !user.name || !user.email) {
+  if (!user?.name || !user?.email) {
     localStorage.removeItem('proofFilename');
-  }  
+  }
 }
+
 
 async function handleJsonUploadClick() {
   const proofUploaded = localStorage.getItem('proofFilename');
