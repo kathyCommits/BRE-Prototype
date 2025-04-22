@@ -7,7 +7,7 @@
       "ruleType": "CUSTOM",
       "policyType": 1,
       "ruleConfig": {
-        "value": "12345678"
+        "value": "1234"
       },
       "applicantMetaData": [
         {
@@ -54,7 +54,7 @@
       "ruleType": "CUSTOM",
       "policyType": 1,
       "ruleConfig": {
-        "value": "40"
+        "value": "000000"
       },
       "applicantMetaData": [
         {

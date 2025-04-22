@@ -1,18 +1,9 @@
-
 // === GLOBAL FUNCTIONS ===
 
 async function loadRules(filterCategory = '') {
   let rules;
 
   // ✅ Load from localStorage if available
-  const stored = localStorage.getItem("breRules");
-  if (stored) {
-    try {
-      rules = JSON.parse(stored);
-    } catch (e) {
-      console.warn("Failed to parse breRules from localStorage, falling back to API.", e);
-    }
-  }
 
   if (!rules) {
     const res = await fetch('/api/rules');
@@ -124,6 +115,7 @@ if (rule) {
   if (!rule.ruleMetadata) rule.ruleMetadata = {};
   rule.ruleMetadata.ruleDescription = newDescription;
 
+  window.__breRules = []; // clear memory
   await loadRules(); // 👈 refresh visible table row values
 }
 
