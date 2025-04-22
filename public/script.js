@@ -1,23 +1,16 @@
 
 // === GLOBAL FUNCTIONS ===
 
+
 async function loadRules(filterCategory = '') {
-  let rules;
+  const res = await fetch('/api/rules');
+  if (!res.ok) throw new Error('Failed to fetch rules from server');
 
-  // ✅ Load from localStorage if available
-  const stored = localStorage.getItem("breRules");
-  if (stored) {
-    try {
-      rules = JSON.parse(stored);
-    } catch (e) {
-      console.warn("Failed to parse breRules from localStorage, falling back to API.", e);
-    }
-  }
+  const rules = await res.json();
 
-  if (!rules) {
-    const res = await fetch('/api/rules');
-    rules = await res.json();
-  }
+  // Store in memory and localStorage for consistency
+  window.__breRules = rules;
+  localStorage.setItem("breRules", JSON.stringify(rules));
 
   const tableBody = document.getElementById('rulesTable');
   tableBody.innerHTML = '';
@@ -110,22 +103,11 @@ async function saveRule(id) {
       throw new Error(text);
     }
 
-    const rule = window.__breRules.find(r => r.ruleId === id);
-if (rule) {
-  rule.ruleCheckpointParameter = newParam;
-  rule.ruleTemplateGroupCategory = newCategory;
+    // ⏳ Wait briefly to let backend write file
+    await new Promise(resolve => setTimeout(resolve, 100));
 
-  if (rule.ruleConfig) {
-    rule.ruleConfig.value = newVal;
-  } else {
-    rule.value = newVal;
-  }
-
-  if (!rule.ruleMetadata) rule.ruleMetadata = {};
-  rule.ruleMetadata.ruleDescription = newDescription;
-
-  loadRulesFromMemory(); // 👈 refresh visible table row values
-}
+    await loadRules(); // ✅ re-fetch fresh data
+    await saveProofSnapshot(); // ✅ snapshot with latest data
 
     alert('Rule updated!');
   } catch (err) {
@@ -141,6 +123,10 @@ async function saveProofSnapshot() {
     console.warn("🛑 No proof filename set. Cannot save snapshot.");
     return;
   }
+  if (!Array.isArray(rules) || rules.length === 0) {
+    console.warn("🛑 No rules found to save.");
+    return;
+  }  
 
   try {
     const response = await fetch('/api/proof/snapshot', {
@@ -180,11 +166,6 @@ function addNewRule() {
 
 async function submitNewRule(newId) {
   return submitValidatedRule(newId);
-}
-
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) return next();
-  res.status(401).json({ message: 'Not logged in' });
 }
 
 function validateRule(rule) {
@@ -317,6 +298,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 }
 
+
 if (!localStorage.getItem("proofFilename")) {
   const addBtn = document.querySelector("button[onclick='addNewRule()']");
   if (addBtn) addBtn.disabled = true;
@@ -336,6 +318,8 @@ if (!localStorage.getItem("proofFilename")) {
     }
   });
 }
+
+<div id="proofFilenameDisplay"></div>
 
 });
 
@@ -445,25 +429,14 @@ function loadRulesFromMemory() {
 
 document.addEventListener("DOMContentLoaded", () => {
   
-  const stored = localStorage.getItem("breRules");
   const proofUploaded = localStorage.getItem("proofFilename");
 
-  if (stored && proofUploaded) {
-  try {
-    window.__breRules = JSON.parse(stored);
-    const proofUploaded = localStorage.getItem("proofFilename");
     if (proofUploaded) {
-    loadRulesFromMemory();
+  loadRules(); // Always fetch latest from backend
     } else {
-    console.warn("❌ Not loading rules — proof not uploaded.");
+    console.warn("❌ Rules table blocked — no proof uploaded");
     }
 
-  } catch (e) {
-    console.warn("Error loading rules from localStorage:", e);
-  }
-  } else if (!proofUploaded) {
-  console.warn("❌ Rules table blocked — no proof uploaded");
-  }
 
   const editableInputs = document.querySelectorAll('#rulesTable input, #rulesTable select, #rulesTable button');
   if (!proofUploaded) {
@@ -585,26 +558,26 @@ async function checkAuth() {
     const user = await res.json();
     console.log('📦 Raw user response:', user);
 
-  
-      const filename = localStorage.getItem('proofFilename');
-      if (!filename) {
-        alert("⚠️ No snapshot available to download.");
-        return;
-      }
-      window.open(`/download/proof/${filename}.json`, '_blank');
-      
-
     if (user && user.name && user.email) {
       document.getElementById('authStatus').innerHTML = `
         ✅ Logged in as <b>${user.name}</b> (${user.email})
         <a href="/auth/logout">Logout</a>
       `;
+
       document.getElementById('uploadSection').style.display = 'block';
+
+      // ✅ Immediately load rules from backend if proof was uploaded
+      const proofUploaded = localStorage.getItem("proofFilename");
+      if (proofUploaded) {
+        await loadRules(); // fetch fresh from backend and render
+      }
+
     } else {
       document.getElementById('authStatus').innerHTML = `
         ⚠️ Session error. Please log out and try again.
         <a href="/auth/logout">Logout</a>
       `;
+      localStorage.removeItem('proofFilename');
     }
 
   } catch (err) {
@@ -613,11 +586,8 @@ async function checkAuth() {
       ❌ Not logged in<br>
       <a href="/auth/google" id="loginLink">Login with Google</a>
     `;
-  }
-
-  if (!user || !user.name || !user.email) {
     localStorage.removeItem('proofFilename');
-  }  
+  }
 }
 
 async function handleJsonUploadClick() {

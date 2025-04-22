@@ -7,7 +7,7 @@
       "ruleType": "CUSTOM",
       "policyType": 1,
       "ruleConfig": {
-        "value": "12"
+        "value": "128900790"
       },
       "applicantMetaData": [
         {
@@ -54,7 +54,7 @@
       "ruleType": "CUSTOM",
       "policyType": 1,
       "ruleConfig": {
-        "value": "40"
+        "value": "4090"
       },
       "applicantMetaData": [
         {
@@ -977,7 +977,7 @@
           },
           {
             "operandType": "CONSTANT",
-            "value": "(\"Manufacturing\",\"Services\",\"Trader- Retail\",\"Trader- Wholesale\",\"Service - Manpower Supply\")",
+            "value": "",
             "operandDefinition": null,
             "operation": null
           }
@@ -1003,7 +1003,9 @@
             "displayName": "Industry Nature"
           }
         ]
-      }
+      },
+      "parameter": "Nature of Business",
+      "ruleDescription": "Allowed nature of business as per policy"
     },
     {
       "ruleId": "67dc27138abea25513560c91",

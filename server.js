@@ -142,19 +142,6 @@ passport.deserializeUser((obj, done) => {
   done(null, obj);
 });
 
-passport.serializeUser((user, done) => {
-
-  console.log('👉 SERIALIZING USER:', user);
-
-  
-  done(null, user);
-});
-passport.deserializeUser((obj, done) => {
-  console.log('🔄 DESERIALIZING USER:', obj);
-
-
-  done(null, obj);
-});
 
 const PORT = 3000;
 
@@ -174,31 +161,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 const dataPath = path.join(__dirname, 'data/breRules.json');
 
 app.get('/api/rules', (req, res) => {
-  const json = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
-  const rules = json.ruleUnitDtoList.map(rule => {
-    let editableValue = null;
-
-    if (rule.ruleConfig && rule.ruleConfig.value !== undefined) {
-      editableValue = rule.ruleConfig.value;
-    } else if (
-      rule.operand?.operandDefinition?.[1]?.value !== undefined
-    ) {
-      editableValue = rule.operand.operandDefinition[1].value;
+  try {
+    const json = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
+    if (!Array.isArray(json.ruleUnitDtoList)) {
+      return res.status(400).json({ message: 'Invalid rule file format' });
     }
-
-    return {
-      ruleId: rule.ruleId,
-      ruleCheckpointParameter: rule.ruleCheckpointParameter,
-      ruleTemplateGroupCategory: rule.ruleTemplateGroupCategory,
-      ruleType: rule.ruleType,
-      editableValue: editableValue,
-      ruleMetadata: rule.ruleMetadata || { ruleDescription: '' }
-    };
-  });
-
-  res.json(rules);
+    res.json(json.ruleUnitDtoList); // ✅ Send full raw rules
+  } catch (err) {
+    console.error('❌ Failed to load rules:', err);
+    res.status(500).json({ message: 'Error reading rules file' });
+  }
 });
-
 
 app.post('/api/rules/:id', ensureAuthenticated, (req, res) => {
   const { id } = req.params;
@@ -321,13 +294,6 @@ app.get('/auth/google/callback',
     });
   }
 );
-
-
-app.get('/auth/logout', (req, res) => {
-  req.logout(() => {
-    res.redirect('/');
-  });
-});
 
 app.get('/auth/user', (req, res) => {
   console.log('📩 /auth/user called');
