@@ -15,17 +15,44 @@ async function loadRules(filterCategory = '') {
 
   const categories = new Set();
 
+  console.log("🧠 Loaded rules:", rules);
+  console.log("🚀 Type of rules:", typeof rules, "Length:", rules.length);
+
   rules.forEach((rule, index) => {
     const cat = rule.ruleTemplateGroupCategory || rule.category || '';
     categories.add(cat);
 
     if (!filterCategory || cat === filterCategory) {
-      const value =
-  typeof rule?.ruleConfig?.value === "string" && !rule?.ruleConfig?.value.includes("L")
-    ? rule.ruleConfig.value
-    : rule.operand?.operandDefinition?.find?.(op =>
-        op.operandType === "CONSTANT" && !op.value?.includes("L") && !op.value?.includes("deviationRuleV2")
-      )?.value || '';
+      console.log(`🧱 Rendering row ${index} → ruleId:`, rule.ruleId);
+
+      let value = '';
+
+      if (
+        rule?.ruleConfig?.value !== undefined &&
+        typeof rule.ruleConfig.value !== 'object' &&
+        !String(rule.ruleConfig.value).includes("L")
+      ) {
+        value = rule.ruleConfig.value;      
+      } else {
+     const fallbackOp = rule.operand?.operandDefinition?.find(op =>
+    op.operandType === "CONSTANT" &&
+    typeof op.value === "string" &&
+    !op.value.includes("L") &&
+    !op.value.includes("deviationRuleV2")
+  );
+
+  // ✅ Only assign if fallbackOp and value are valid
+  if (fallbackOp && typeof fallbackOp.value === "string") {
+    value = fallbackOp.value;
+  } else {
+    value = ''; // ⛑️ Graceful fallback if nothing found
+  }
+}
+
+      
+      
+            
+          console.log(`✅ Rule ${index}: param=${rule.ruleCheckpointParameter}, val=${value}`);
 
       const row = document.createElement('tr');
       row.innerHTML = `
@@ -276,6 +303,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const tableBody = document.getElementById('rulesTable');
     
     const row = document.createElement('tr');
+    try{
     row.innerHTML = `
       <td>New</td>
       <td><input type="text" id="param-${newId}" value="${param}"></td>
@@ -285,6 +313,9 @@ document.addEventListener("DOMContentLoaded", function () {
       <td><button onclick="submitNewRule('${newId}')">Save</button></td>
     `;
     tableBody.prepend(row);
+    } catch (err) {
+      console.error(`❌ Error rendering rule ${index}`, rule, err);
+    }
 
     const rule = {
       ruleId: newId,
@@ -354,7 +385,7 @@ function uploadRules(event) {
   if (!file) return;
 
   const reader = new FileReader();
-  reader.onload = function(e) {
+  reader.onload = async function(e) {
     try {
       const parsed = JSON.parse(e.target.result);
       console.log("Parsed JSON:", parsed);
@@ -380,20 +411,25 @@ function uploadRules(event) {
       }
 
       window.__breRules = rules;
-      localStorage.setItem("breRules", JSON.stringify(rules));
+      //localStorage.setItem("breRules", JSON.stringify(rules)); ❌
+      await fetch('/api/rules', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ rules }),
+      });
+      
       alert("Rules imported successfully!");
-
 
       // ✅ Safely load rules after DOM is ready
       setTimeout(() => {
         const table = document.getElementById("rulesTable"); // ✅ matches your DOM
         
         if (table) {
-      loadRulesFromMemory(); // calls window.__breRules and populates table
       loadRules();
         } else {
         alert("DOM not ready. Retrying load...");
-        setTimeout(() => loadRulesFromMemory(), 100); // retry after short delay
+        setTimeout(() => loadRules(), 100); // retry after short delay
         }
       }, 50);
 
@@ -409,78 +445,15 @@ function uploadRules(event) {
 // This is used after uploading a JSON file from the frontend,
 // bypassing the backend API and directly displaying the imported rules.
 
-function loadRulesFromMemory() {
-  const ruleTable = document.getElementById("rulesTable");
-  if (!ruleTable) {
-    alert("Error: Could not find table body in DOM.");
-    return;
-  }
-  ruleTable.innerHTML = ""; // Clear current content
-
-  const rules = window.__breRules || [];
-  rules.forEach((rule, index) => {
-    const id = rule.ruleId || index;
-
-    const param = rule.ruleCheckpointParameter || "";
-    const category = rule.ruleTemplateGroupCategory || "";
-    const description = rule.ruleMetadata?.ruleDescription || "";
-
-    // ✅ ONLY use ruleConfig.value
-    const value =
-    typeof rule?.ruleConfig?.value === "string" && !rule?.ruleConfig?.value.includes("L")
-    ? rule.ruleConfig.value
-    : rule.operand?.operandDefinition?.find?.(op =>
-        op.operandType === "CONSTANT" && !op.value?.includes("L") && !op.value?.includes("deviationRuleV2")
-      )?.value || '';
-
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${index + 1}</td>
-      <td><input type="text" id="param-${id}" value="${param}"/></td>
-      <td><input type="text" id="cat-${id}" value="${category}"/></td>
-      <td><input type="text" id="val-${id}" value="${value}"/></td>
-      <td><input type="text" id="desc-${id}" value="${description}"/></td>
-      <td>
-        <button onclick="saveRule('${id}')">Save</button>
-        <button onclick="deleteRule('${id}')">Delete</button>
-      </td>
-    `;
-    ruleTable.appendChild(row);
-  });
-  const filterDropdown = document.getElementById("categoryFilter");
-  const categories = new Set(rules.map(r => r.ruleTemplateGroupCategory || ''));
-  if (filterDropdown) {
-  filterDropdown.innerHTML = '<option value="">All</option>';
-  [...categories].sort().forEach(cat => {
-    const opt = document.createElement("option");
-    opt.value = cat;
-    opt.textContent = cat;
-    filterDropdown.appendChild(opt);
-  });
-  }
-}
-
 document.addEventListener("DOMContentLoaded", () => {
   
-  const stored = localStorage.getItem("breRules");
   const proofUploaded = localStorage.getItem("proofFilename");
 
-  if (stored && proofUploaded) {
-  try {
-    window.__breRules = JSON.parse(stored);
-    const proofUploaded = localStorage.getItem("proofFilename");
-    if (proofUploaded) {
-    loadRulesFromMemory();
-    } else {
-    console.warn("❌ Not loading rules — proof not uploaded.");
-    }
-
-  } catch (e) {
-    console.warn("Error loading rules from localStorage:", e);
-  }
-  } else if (!proofUploaded) {
-  console.warn("❌ Rules table blocked — no proof uploaded");
-  }
+  if (proofUploaded) {
+    loadRules(); // ✅ Always fetch from backend
+  } else {
+    console.warn("❌ Rules table blocked — no proof uploaded");
+  }  
 
   const editableInputs = document.querySelectorAll('#rulesTable input, #rulesTable select, #rulesTable button');
   if (!proofUploaded) {

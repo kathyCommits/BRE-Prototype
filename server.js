@@ -158,7 +158,7 @@ passport.deserializeUser((obj, done) => {
 
 const PORT = 3000;
 
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
