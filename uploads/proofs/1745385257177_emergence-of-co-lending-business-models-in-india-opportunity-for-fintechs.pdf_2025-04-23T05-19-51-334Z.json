@@ -1,0 +1,1551 @@
+[
+  {
+    "ruleId": "08eabff6a1f1f23a4b275c16",
+    "ruleCheckpointParameter": "debt",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": "78",
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L3 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1- L2, Pass"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "121c8ec30cdd708b779b349a",
+    "ruleCheckpointParameter": "PEP Check/Negative Willful Defaulter Check/Negative Google Check etc.",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": "000000",
+    "ruleMetadata": {
+      "ruleDescription": "No deviation allowed",
+      "failureDescription": "Devation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "nonDeviationRuleV2",
+          "displayName": "If value in L1- L6, fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "195dbe048c82c648da8d9392",
+    "ruleCheckpointParameter": "Creditor days",
+    "ruleTemplateGroupCategory": "Financial details",
+    "ruleType": "REGULAR",
+    "editableValue": "150",
+    "ruleMetadata": {
+      "ruleDescription": "Creditor days shall not be more than 90 days, with deviation 150 days",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "loanAppUnderwritingParameters.creditorDays",
+          "displayName": "Creditor days"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "1c6b42df0cc2d9744da7a19c",
+    "ruleCheckpointParameter": "EMI Bounces in L6M",
+    "ruleTemplateGroupCategory": "Financial details",
+    "ruleType": "REGULAR",
+    "editableValue": "5",
+    "ruleMetadata": {
+      "ruleDescription": "EMI bounces to be not >5 in L6M due to insufficient funds",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "borrower.underwritingParameters.bouncesLast6m",
+          "displayName": "EMI Bounces in Last 6 months"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "1d47ec83735f5db6d5b27f78",
+    "ruleCheckpointParameter": "Negative Net worth (ATNW)",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L4 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1- L4 -Then  Pass Else Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "1df36e3943dfe1f7694095f0",
+    "ruleCheckpointParameter": "PY Financials showing Cash Loss, but current year Positive",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L3 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If L1 - L3 then Pass, else Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "35833eb06bd3219ad5deffa4",
+    "ruleCheckpointParameter": "Debtors + Stock Days",
+    "ruleTemplateGroupCategory": "Financial details",
+    "ruleType": "REGULAR",
+    "editableValue": "200",
+    "ruleMetadata": {
+      "ruleDescription": "Debtors + Stock days shall not be more than 150 days, with Deviation 200 days",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "loanAppUnderwritingParameters.debtorStockDays",
+          "displayName": "Debtors + Stock Days"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "36785c510eebf7dc0b1a46e7",
+    "ruleCheckpointParameter": "Personal discussion waiver",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "No deviation allowed",
+      "failureDescription": "Devation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "nonDeviationRuleV2",
+          "displayName": "If value in L1- L6, fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "3eee60be1c7cc800e93f1084",
+    "ruleCheckpointParameter": "Turnover",
+    "ruleTemplateGroupCategory": "Financial details",
+    "ruleType": "REGULAR",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Min allowed GST turnover should be 50 L and max is 250 Cr",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "borrower.companyFinancials.annualBusinessTurnover",
+          "displayName": "GST Turnover"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "465491df188932d5d23d624c",
+    "ruleCheckpointParameter": "Negative Working capital cycle as per last audited financials",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L2 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If L1 - L2 then Pass, else Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "4779e221e7265642b6e5996c",
+    "ruleCheckpointParameter": "GST TO growth in L12M over P12M",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L1 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1, Pass"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "496ab3843de04396362c6e8f",
+    "ruleCheckpointParameter": "POS to high credit of entity/ prop",
+    "ruleTemplateGroupCategory": "Financial details",
+    "ruleType": "REGULAR",
+    "editableValue": "75",
+    "ruleMetadata": {
+      "ruleDescription": "POS to high credit of entity/ prop ratio to be less than 75%",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "loanAppUnderwritingParameters.posToHighCredit",
+          "displayName": "POS to high credit of entity/ prop"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "49c2e6fa88bd1f23369abef6",
+    "ruleCheckpointParameter": "Inward cheque return",
+    "ruleTemplateGroupCategory": "Financial details",
+    "ruleType": "REGULAR",
+    "editableValue": "4",
+    "ruleMetadata": {
+      "ruleDescription": "Not more than 3% of the cheques issued in value. With deviation, 4% is allowed",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "loanAppUnderwritingParameters.inwardReturn",
+          "displayName": "Inward cheque return"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "57070f293289ddf6d1176976",
+    "ruleCheckpointParameter": "Negative rating/ downgraded rating",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L2 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1- L2 -Then  Pass Else Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "57766fe232fa784286cb912f",
+    "ruleCheckpointParameter": "GST TO growth in L12M over P12M",
+    "ruleTemplateGroupCategory": "Financial details",
+    "ruleType": "REGULAR",
+    "editableValue": "-25",
+    "ruleMetadata": {
+      "ruleDescription": "GST TO growth in L12M over P12M should be more than 25%, with deviation -25% is allowed",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "loanAppUnderwritingParameters.gstGrowthL12MP12M",
+          "displayName": "GST TO growth in L12M over P12M"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "58e20f1b32a85662f854f7f0",
+    "ruleCheckpointParameter": "Funding to Restricted Industries",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L5 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1- L5 -Then  Pass Else Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "632f004ec6b77e74e16e551a",
+    "ruleCheckpointParameter": "Residence OR/AND office outside Geo-Limit (Collection Concurrence)",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L2 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1- L2, Pass ELSE Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "666d2b3648912412db0de389",
+    "ruleCheckpointParameter": "Group Exposure",
+    "ruleTemplateGroupCategory": "Financial details",
+    "ruleType": "REGULAR",
+    "editableValue": "5000000",
+    "ruleMetadata": {
+      "ruleDescription": "Group Exposure should be less than 50 Lakh",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "loanAppUnderwritingParameters.groupExposure",
+          "displayName": "Group Exposure"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "674d901307a1e06f05c7512d",
+    "ruleCheckpointParameter": "CIBIL Score (Primary Applicant)",
+    "ruleTemplateGroupCategory": "Bureau details",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "CIBIL Score of Primary Applicant (co-applicant with highest shareholding) should be more than 700 or between -1 and 5. If all co-applicant have same shareholding, then co-applicant with Max CIBIL will be considered",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "cibilRule",
+          "displayName": "CIBIL Score of Primary Applicant (co-applicant with highest shareholding) should be more than 700 or between -1 and 5. If all co-applicant have same shareholding, then co-applicant with Max CIBIL will be considered"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "67dc27138abea25513560c90",
+    "ruleCheckpointParameter": "Nature of Business",
+    "ruleTemplateGroupCategory": "Business details",
+    "ruleType": "REGULAR",
+    "editableValue": "(\"Manufacturing\",\"Services\",\"Trader- Retail\",\"Trader- Wholesale\",\"Service - Manpower Supply\")",
+    "ruleMetadata": {
+      "ruleDescription": "Allowed nature of business as per policy",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "borrower.business.industryNature",
+          "displayName": "Industry Nature"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "67dc27138abea25513560c91",
+    "ruleCheckpointParameter": "Co-applicant Age",
+    "ruleTemplateGroupCategory": "Application details",
+    "ruleType": "CUSTOM",
+    "editableValue": "76",
+    "ruleMetadata": {
+      "ruleDescription": "Co-applicants with minimum 51% holding to meet the age norms of 21 and 65 years",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "ageRule",
+          "displayName": "Co-applicants with minimum 51% holding to meet the age norms of 21 and 65 years"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "67dc27138abea25513560c92",
+    "ruleCheckpointParameter": "Interest Rate",
+    "ruleTemplateGroupCategory": "Loan details",
+    "ruleType": "REGULAR",
+    "editableValue": "24",
+    "ruleMetadata": {
+      "ruleDescription": "The maximum interest to be charged to borrowers by NBFC should not exceed 24%",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "terms.interestRate",
+          "displayName": "Interest Rate"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "67dc27138abea25513560c93",
+    "ruleCheckpointParameter": "POS to TO",
+    "ruleTemplateGroupCategory": "Financial details",
+    "ruleType": "REGULAR",
+    "editableValue": "20",
+    "ruleMetadata": {
+      "ruleDescription": "POS of active UBL to GST turnover ratio to be less than 20%",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "loanAppUnderwritingParameters.posToTurnover",
+          "displayName": "POS of active UBL to GST turnover"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "67de7ad63e56760e08e89bdf",
+    "ruleCheckpointParameter": "Bureau Score norms not met",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation not allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "nonDeviationRuleV2",
+          "displayName": "If value in L1-L6 -Then Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "67de7ad63e56760e08e89be0",
+    "ruleCheckpointParameter": "Overriding sanction validity",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation not allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "nonDeviationRuleV2",
+          "displayName": "If value in L1- L6, then fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "67de7ad63e56760e08e89be1",
+    "ruleCheckpointParameter": "Current Statutory Dues (Including GST) – Max Filing lag in last 12 months",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L2 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1- L2 -Then  Pass Else Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "67de7ad63e56760e08e89be2",
+    "ruleCheckpointParameter": "Deviation to Group exposure norms",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval not allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "nonDeviationRuleV2",
+          "displayName": "If value in L1- L6 -Then Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "67de7ad63e56760e08e89be3",
+    "ruleCheckpointParameter": "Vintage norms/ Business Continuity Proof not met of Entity or any Promoters",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L2 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1- L2, then Pass else fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "67de7ad63e56760e08e89be4",
+    "ruleCheckpointParameter": "DPDs in last 6-12 months in any loan account",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L1 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1 -Then Pass Else Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "67de7ad63e56760e08e89be5",
+    "ruleCheckpointParameter": "Top supplier/customer as per GST not matching with banking",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L3 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1- L3 -Then  Pass Else Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "67de7ad63e56760e08e89be6",
+    "ruleCheckpointParameter": "Udhyam registration certificate waiver",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation not allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "nonDeviationRuleV2",
+          "displayName": "If value in L1- L6 -Then Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "67de7ad63e56760e08e89be7",
+    "ruleCheckpointParameter": "EMI bounce in last 6 months due to insufficient funds",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L4 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1- L4, Pass"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "67de7ad63e56760e08e89be8",
+    "ruleCheckpointParameter": "Minimum/Maximum turnover norms not met",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation not allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "nonDeviationRuleV2",
+          "displayName": "If value in L1- L6 - Then Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "67de7ad63e56760e08e89be9",
+    "ruleCheckpointParameter": "Derog in CIBIL (W/O/ Settled/LSS/SUB/DBT/SMA2) in any loan",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation not allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "nonDeviationRuleV2",
+          "displayName": "If value in L1- L6 -Then Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "67de7ad63e56760e08e89bea",
+    "ruleCheckpointParameter": "Commercial CIBIL- CMR",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation not allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "nonDeviationRuleV2",
+          "displayName": "If value in L1- L6 -Then Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "67de7ad63e56760e08e89beb",
+    "ruleCheckpointParameter": "Recent open litigation finding in company report (corpository)",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L3 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1- L3 -Then  Pass Else Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "67de7ad63e56760e08e89bec",
+    "ruleCheckpointParameter": "Non-Credit card Default/Overdue in CIBIL",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L2 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If L1 - L2 Then Pass, Else Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "67de7ad63e56760e08e89bed",
+    "ruleCheckpointParameter": "DPDs within last 6 months in any loan",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation not allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "nonDeviationRuleV2",
+          "displayName": "If value in L1-L6, Then Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "67e130087c88891fbbbc3ab6",
+    "ruleCheckpointParameter": "Debtor days",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L2 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1- L2 Then Pass Else Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "67e130087c88891fbbbc3ab7",
+    "ruleCheckpointParameter": "Creditor days",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L2 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1- L2 Then Pass Else Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "6df685f9fa31d4d2721af155",
+    "ruleCheckpointParameter": "EMI Bounces (In last three months)",
+    "ruleTemplateGroupCategory": "Financial details",
+    "ruleType": "REGULAR",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "No EMI bounce in last 3 months due to insufficient funds for defined locations",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "borrower.location",
+          "displayName": "Location"
+        },
+        {
+          "fullPath": "borrower.underwritingParameters.bouncesLast3m",
+          "displayName": "EMI Bounces in last three months"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "73150f372f7cca7942378bf6",
+    "ruleCheckpointParameter": "Deviation to DSCR norms",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "no deviation allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "nonDeviationRuleV2",
+          "displayName": "If L1 - L6 , fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "761a66b67105001598912c76",
+    "ruleCheckpointParameter": "Banking throughput (BTO)",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L3 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1- L3, Pass"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "7d3ff6a5e0143455bc7b15eb",
+    "ruleCheckpointParameter": "PAT Loss in CY, but Cash PAT is positive due to Depreciation",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L3 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If L1 - L3 Then Pass, Else Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "800f14c62a238faeb1b94ed0",
+    "ruleCheckpointParameter": "OD/CC limit utilization (recent 3 months) >97%- Norms not met",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L3 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1- L3 -Then  Pass Else Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "82829cac9d5ce72047f43ecb",
+    "ruleCheckpointParameter": "Deviation to 1st Time USL Norm",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L3 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If L1 - L3 then Pass, else Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "88eacb9992217f64f3a27058",
+    "ruleCheckpointParameter": "Debtor+ Stock days more than 150",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L2 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1- L2 Then Pass Else Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "8bb7bc1d90b8cb5a793702bf",
+    "ruleCheckpointParameter": "Deviation to Top-up norms",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "No deviation allowed",
+      "failureDescription": "Devation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "nonDeviationRuleV2",
+          "displayName": "If value in L1- L6, fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "8e77d0251631baeef8522f84",
+    "ruleCheckpointParameter": "Sanction Amount",
+    "ruleTemplateGroupCategory": "Loan details",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Min Loan Amount - 15 L.\nIf Industry is in Green category then Max Loan Amount is 35.7 L.\nif Industry is in Yellow category then Max Loan Amount is 35.7 L.\nif Industry is in Amber category then Max Loan Amount is 35.7 L.\nif Industry is in Red category then not allowed.",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "sanctionAmount",
+          "displayName": "Loan amount at the time of sanction"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "9526f328491ceb41b6b9fc16",
+    "ruleCheckpointParameter": "Debtors >6 months more than ATNW",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L3 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1- L3 Then Pass Else Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "95e6f1083a8d0048cffc3e7f",
+    "ruleCheckpointParameter": "DSCR",
+    "ruleTemplateGroupCategory": "Financial details",
+    "ruleType": "REGULAR",
+    "editableValue": "1",
+    "ruleMetadata": {
+      "ruleDescription": "Eligible EMI to be calculated on DSCR of 1.00",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "borrower.underwritingParameters.dscr",
+          "displayName": "DSCR"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "9d732befe101e646c7020fca",
+    "ruleCheckpointParameter": "Cash credits to overall credits",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L3 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1- L3, Pass"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "9fd37ee71d6e33c23a1a21e4",
+    "ruleCheckpointParameter": "Deviation to location wise max loan amount norms",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L4 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1- L4 -Then  Pass Else Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "9fd37ee71d6e33c23a1c41e4",
+    "ruleCheckpointParameter": "Deviation to Hospital norms",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "No deviation allowed",
+      "failureDescription": "Devation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "nonDeviationRuleV2",
+          "displayName": "If value in L1- L6, fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "a271e8b2e931f0259643942b",
+    "ruleCheckpointParameter": "PD at place other than office/factory",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L4 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1- L4, Pass"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "a93e5c207212fe808062f87c",
+    "ruleCheckpointParameter": "Drop in Operating profit",
+    "ruleTemplateGroupCategory": "Financial details",
+    "ruleType": "REGULAR",
+    "editableValue": "-40",
+    "ruleMetadata": {
+      "ruleDescription": "Drop in Operating profit should be more than -20%, with deviation -40% allowed",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "loanAppUnderwritingParameters.operatingProfitDrop",
+          "displayName": "Drop in Operating profit"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "a9b04507b8eb58b0031d7fd4",
+    "ruleCheckpointParameter": "Cash Profit",
+    "ruleTemplateGroupCategory": "Financial details",
+    "ruleType": "REGULAR",
+    "editableValue": "0",
+    "ruleMetadata": {
+      "ruleDescription": "Not to be negative in Current Financial Year (Audited)",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "loanAppUnderwritingParameters.cashProfit",
+          "displayName": "Cash Profit"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "ae507d590a0a2d859f1943ff",
+    "ruleCheckpointParameter": "Crime Check",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L3 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1- L3, Pass"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "b12029ac8f68b676521fa5d4",
+    "ruleCheckpointParameter": "TOL/ATNW",
+    "ruleTemplateGroupCategory": "Financial details",
+    "ruleType": "REGULAR",
+    "editableValue": "8",
+    "ruleMetadata": {
+      "ruleDescription": "Max allowed Total outstanding limit to Total net worth ratio ratio to be 5, and including deviaiton this ratio can go upto 8",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "borrower.underwritingParameters.tolATNWRatio",
+          "displayName": "TOL/ATNW"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "b45f142746b370ea26974c52",
+    "ruleCheckpointParameter": ">24 months tenure to non-CGTMSE eligible entity",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "No deviation allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "nonDeviationRuleV2",
+          "displayName": "If value in L1- L6, fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "b4f9458e679f7514236e2127",
+    "ruleCheckpointParameter": "Max and Min age deviation",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "no deviation allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "nonDeviationRuleV2",
+          "displayName": "If L1 - L6 , fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "bc0c9dd7f015d6e834d9b268",
+    "ruleCheckpointParameter": "Debt/Equity",
+    "ruleTemplateGroupCategory": "Financial details",
+    "ruleType": "REGULAR",
+    "editableValue": "5",
+    "ruleMetadata": {
+      "ruleDescription": "Debt/Equity ratio to be smaller than 4, with deviation this ratio of 5 is acceptable",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "borrower.underwritingParameters.debtEquityRatio",
+          "displayName": "Debt/Equity"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "bdb4c260380a080a9bc0d794",
+    "ruleCheckpointParameter": "Minimum ABB norms not met",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "No deviation allowed",
+      "failureDescription": "Devation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "nonDeviationRuleV2",
+          "displayName": "If value in L1- L6, fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "c9020105ded47123b5f17142",
+    "ruleCheckpointParameter": "OD/CC limit utilization (recent 3 months) >97% - Norms not met",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "No deviation allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "nonDeviationRuleV2",
+          "displayName": "If value in L1- L6, fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "cc7bf800ad473438a8caeb49",
+    "ruleCheckpointParameter": "Deviation to ownership norms",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "No deviation allowed",
+      "failureDescription": "Devation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "nonDeviationRuleV2",
+          "displayName": "If value in L1- L6, fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "d35145284bbce354dba1ef94",
+    "ruleCheckpointParameter": "Personal discussion waiver",
+    "ruleTemplateGroupCategory": "Loan details",
+    "ruleType": "REGULAR",
+    "editableValue": "true",
+    "ruleMetadata": {
+      "ruleDescription": "Personal discussion waiver shoudn't be taken",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "loanAppUnderwritingParameters.pdWaiver",
+          "displayName": "Personal discussion waiver"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "d9792909320ab5a0236725d5",
+    "ruleCheckpointParameter": "TOL/ATNW",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L2 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1- L2 Then Pass Else Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "dab2f8da5d111cd7e428fc15",
+    "ruleCheckpointParameter": "Director is disqualified u/s 164(2) of Companies act.",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "No deviation allowed",
+      "failureDescription": "Devation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "nonDeviationRuleV2",
+          "displayName": "If value in L1- L6, fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "df4b4b1bc702eea1cec27311",
+    "ruleCheckpointParameter": "Cash credits to overall credits",
+    "ruleTemplateGroupCategory": "Financial details",
+    "ruleType": "REGULAR",
+    "editableValue": "60",
+    "ruleMetadata": {
+      "ruleDescription": "Cash credits to overall credits should be less than 60%",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "loanAppUnderwritingParameters.ccToOverallCredits",
+          "displayName": "Cash credits to overall credits"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "dfcff5e569d68226b19c4ddb",
+    "ruleCheckpointParameter": "Filing gap between two ITR's Less than 6 months",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L2 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If L1 - L2 then Pass, else Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "e1e37de2c6b03a9415ee8e1c",
+    "ruleCheckpointParameter": "CMR Score",
+    "ruleTemplateGroupCategory": "Bureau details",
+    "ruleType": "REGULAR",
+    "editableValue": "8",
+    "ruleMetadata": {
+      "ruleDescription": "CMR score till 5 allowed, with Deviation 8",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "borrower.underwritingParameters.cmrScore",
+          "displayName": "CMR Score"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "e4c61882dbdf595db4d371bc",
+    "ruleCheckpointParameter": "Statutory Dues not paid beyond due date of filing of Tax Audit Report",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L2 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1- L2 -Then  Pass Else Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "e57cbdb9f60eea2aa873b820",
+    "ruleCheckpointParameter": "BTO",
+    "ruleTemplateGroupCategory": "Financial details",
+    "ruleType": "REGULAR",
+    "editableValue": "70",
+    "ruleMetadata": {
+      "ruleDescription": "Banking Throughput to be more than 70%",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "borrower.underwritingParameters.bto",
+          "displayName": "Banking Throughput"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "e5fdcbfbcaa6a4cf2510e642",
+    "ruleCheckpointParameter": "Current/CC/Saving A/c - Inward cheques return of total transactions (Other than EMI Cheques)",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L2 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1- L2, Pass"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "e6515c63d647a5d8e0117c9f",
+    "ruleCheckpointParameter": "Borrowing to Turnover",
+    "ruleTemplateGroupCategory": "Financial details",
+    "ruleType": "REGULAR",
+    "editableValue": "50",
+    "ruleMetadata": {
+      "ruleDescription": "Borrowing (Debt) to 12 M GST sales ratio to be less than 50%",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "loanAppUnderwritingParameters.borrowingToTurnover",
+          "displayName": "Borrowing to Turnover"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "e76c00cdb4dfa929d491bfb8",
+    "ruleCheckpointParameter": "Deviation to Video PD norms",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L4 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If L1 - L4 Then Pass, Else Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "e9f644a34c160c4fc9c0f3a5",
+    "ruleCheckpointParameter": "FI and FCU deviation",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L3 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1- L3, Pass"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "eb66d65cf8740a1c402508fe",
+    "ruleCheckpointParameter": "Drop in Turnover, OPBDIT/ Cash Profit/Net Worth",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L2 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": null,
+          "displayName": "If value in L1- L2 -Then  Pass Else Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "eece1916d9a6847d6d766fb1",
+    "ruleCheckpointParameter": "Borrowing to T/o Ratio",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L2 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1- L2 -Then  Pass Else Fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "f1b278f91bc6a182e663c350",
+    "ruleCheckpointParameter": "ATNW",
+    "ruleTemplateGroupCategory": "Financial details",
+    "ruleType": "REGULAR",
+    "editableValue": "0",
+    "ruleMetadata": {
+      "ruleDescription": "Not to be negative in Current Financial Year (Audited)",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "loanAppUnderwritingParameters.atnw",
+          "displayName": "ATNW"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "f650417e689ea1a3ffb53b71",
+    "ruleCheckpointParameter": "Bus Vintage-months",
+    "ruleTemplateGroupCategory": "Business details",
+    "ruleType": "REGULAR",
+    "editableValue": "24",
+    "ruleMetadata": {
+      "ruleDescription": "Business vintage should be minimum 2 years",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "borrower.business.businessVintageMonths",
+          "displayName": "Business Vintage-months"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "f91e56bcb8d7d95a551673b6",
+    "ruleCheckpointParameter": "Deviation to co-applicant norms",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "No deviation allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "nonDeviationRuleV2",
+          "displayName": "If value in L1- L6, fail"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "f9d093ec597f5907bcfdc844",
+    "ruleCheckpointParameter": "Constitution",
+    "ruleTemplateGroupCategory": "Loan details",
+    "ruleType": "REGULAR",
+    "editableValue": "(\"Proprietorship\",\"Partnership\",\"LLP\",\"Pvt Ltd company\",\"One Person Company\",\"Ltd Company-listed\",\"Ltd company- unlisted\")",
+    "ruleMetadata": {
+      "ruleDescription": "Business Type to be as per the policy",
+      "failureDescription": "Policy criteria not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "borrower.business.entityType",
+          "displayName": "Business Type"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "fd798563f57f76e2e424c96d",
+    "ruleCheckpointParameter": "Internal De-dupe override",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "ruleType": "CUSTOM",
+    "editableValue": null,
+    "ruleMetadata": {
+      "ruleDescription": "Deviation approval till L3 allowed",
+      "failureDescription": "Deviation norms not met",
+      "orderOfOccurence": [
+        {
+          "fullPath": "deviationRuleV2",
+          "displayName": "If value in L1- L3, Pass"
+        }
+      ]
+    }
+  },
+  {
+    "ruleId": "new-1744618855735",
+    "ruleCheckpointParameter": "New Rule",
+    "ruleTemplateGroupCategory": "new rule",
+    "editableValue": "0",
+    "ruleMetadata": {
+      "ruleDescription": "this rule succeeds previous rules"
+    }
+  },
+  {
+    "ruleId": "new-6leblal7h",
+    "ruleCheckpointParameter": "",
+    "ruleTemplateGroupCategory": "",
+    "editableValue": "",
+    "ruleMetadata": {
+      "ruleDescription": ""
+    }
+  },
+  {
+    "ruleId": "new-inygslq6c",
+    "ruleCheckpointParameter": "",
+    "ruleTemplateGroupCategory": "",
+    "editableValue": "30",
+    "ruleMetadata": {
+      "ruleDescription": ""
+    }
+  },
+  {
+    "ruleId": "new-gyutrrqp0",
+    "ruleCheckpointParameter": "Age ",
+    "ruleTemplateGroupCategory": "Application details",
+    "editableValue": "30",
+    "ruleMetadata": {
+      "ruleDescription": "Age must be greater than 21"
+    }
+  },
+  {
+    "ruleId": "new-195w917pl",
+    "ruleCheckpointParameter": "Age ",
+    "ruleTemplateGroupCategory": "Deviation Parameter",
+    "editableValue": "30",
+    "ruleMetadata": {
+      "ruleDescription": "Age must be greater than 21"
+    }
+  },
+  {
+    "ruleId": "new-29wc6s60m",
+    "ruleCheckpointParameter": "Age ",
+    "ruleTemplateGroupCategory": "Application details",
+    "editableValue": "30",
+    "ruleMetadata": {
+      "ruleDescription": "Age must be greater than 21"
+    }
+  },
+  {
+    "ruleId": "new-ovyy73vym",
+    "ruleCheckpointParameter": "Age ",
+    "ruleTemplateGroupCategory": "Manual",
+    "editableValue": "30",
+    "ruleMetadata": {
+      "ruleDescription": "Age must be greater than 21"
+    }
+  },
+  {
+    "ruleId": "new-p5jdv5juq",
+    "ruleCheckpointParameter": "Age ",
+    "ruleTemplateGroupCategory": "Manual",
+    "editableValue": "30",
+    "ruleMetadata": {
+      "ruleDescription": "Age must be greater than 21"
+    }
+  },
+  {
+    "ruleId": "new-6cfgnsjkj",
+    "ruleCheckpointParameter": "",
+    "ruleTemplateGroupCategory": "Financial Details",
+    "editableValue": "",
+    "ruleMetadata": {
+      "ruleDescription": ""
+    }
+  },
+  {
+    "ruleId": "new-7pph5cfuy",
+    "ruleCheckpointParameter": "age",
+    "ruleTemplateGroupCategory": "Application Details",
+    "editableValue": "30",
+    "ruleMetadata": {
+      "ruleDescription": "21"
+    }
+  },
+  {
+    "ruleId": "06318741f72d1ecf05f2c855",
+    "ruleCheckpointParameter": "Drop in ATNW",
+    "ruleTemplateGroupCategory": "Financial details",
+    "editableValue": "-40",
+    "ruleMetadata": {
+      "ruleDescription": "Drop in ATNW should be more than -20%, with deviation -40% allowed"
+    }
+  },
+  {
+    "ruleId": "new-vaxml9c5k",
+    "ruleCheckpointParameter": "age",
+    "ruleTemplateGroupCategory": "",
+    "editableValue": "",
+    "ruleMetadata": {
+      "ruleDescription": ""
+    }
+  },
+  {
+    "ruleId": "new-92posnf3c",
+    "ruleCheckpointParameter": "Age",
+    "ruleTemplateGroupCategory": "Financial Details",
+    "editableValue": "30",
+    "ruleMetadata": {
+      "ruleDescription": ""
+    }
+  }
+]

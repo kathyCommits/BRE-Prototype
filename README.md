@@ -75,3 +75,27 @@ You can upload an existing breRules.json file (like the one in data/) through th
 - Rule grouping, filtering, and search
 - Improved UI styling with Tailwind or Bootstrap
 
+## 🔐 Environment Setup
+
+Before running the project, you need to set up your environment variables.
+
+1. Duplicate the env template:
+   ```bash
+   cp .env.template .env
+
+2. Fill in your credentials in the .env file:
+
+GOOGLE_CLIENT_ID: From your Google Cloud Console
+
+GOOGLE_CLIENT_SECRET: From the same place
+
+SESSION_SECRET: Any random secure string (used for cookies/sessions)
+
+3. Run the app:
+
+npm install
+npm start
+
+
+⚠️ Never commit your .env file — it contains sensitive secrets.
+It's already excluded from version control via .gitignore.

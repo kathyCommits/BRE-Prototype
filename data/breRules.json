@@ -7,7 +7,7 @@
       "ruleType": "CUSTOM",
       "policyType": 1,
       "ruleConfig": {
-        "value": "9"
+        "value": "89"
       },
       "applicantMetaData": [
         {
@@ -54,7 +54,7 @@
       "ruleType": "CUSTOM",
       "policyType": 1,
       "ruleConfig": {
-        "value": "000000"
+        "value": "007"
       },
       "applicantMetaData": [
         {
@@ -4141,25 +4141,6 @@
         "value": 21,
         "parameter": "age"
       }
-    },
-    {
-      "ruleId": "new-g2wa3pn71",
-      "ruleCheckpointParameter": "age",
-      "ruleTemplateGroupCategory": "Financial details",
-      "ruleMetadata": {
-        "ruleDescription": "asdfghj"
-      },
-      "ruleConfig": {
-        "value": "30"
-      },
-      "validation": {
-        "type": "threshold",
-        "operator": ">=",
-        "value": 21,
-        "parameter": "age"
-      },
-      "parameter": "age",
-      "ruleDescription": "asdfghj"
     },
     {
       "ruleId": "new-gyutrrqp0",
